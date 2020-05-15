@@ -1,0 +1,28 @@
+modLoader="javafml" #mandatory
+loaderVersion="[31,)"
+issueTrackerURL="https://github.com/devsavage/buckets/issues"
+
+[[mods]]
+modId="buckets"
+version="${file.jarVersion}"
+displayName="Buckets"
+updateJSONURL=""
+displayURL=""
+logoFile=""
+credits="Forge"
+authors="savagedev"
+description='''
+'''
+
+[[dependencies.buckets]]
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[31,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.buckets]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="BOTH"
