@@ -25,7 +25,10 @@ package io.savagedev.buckets.init;
 
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.BaseItem;
+import io.savagedev.buckets.items.ItemDiamondBucket;
+import io.savagedev.buckets.util.ModNames;
 import io.savagedev.buckets.util.ModReference;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -41,6 +44,8 @@ import java.util.function.Supplier;
 public class ModItems
 {
     public static final List<Supplier<? extends Item>> ENTRIES = new ArrayList<>();
+
+    public static final RegistryObject<BaseItem> DIAMOND_BUCKET = register(ModNames.Items.DIAMOND_BUCKET, () -> new ItemDiamondBucket(p -> p.maxStackSize(1).group(Buckets.modGroup), Fluids.EMPTY));
 
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {

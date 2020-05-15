@@ -1,7 +1,7 @@
-package io.savagedev.buckets;
+package io.savagedev.buckets.items;
 
 /*
- * Buckets.java
+ * ItemDiamondBucket.java
  * Copyright (C) 2020 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,28 +23,16 @@ package io.savagedev.buckets;
  * THE SOFTWARE.
  */
 
-import io.savagedev.buckets.init.ModItems;
-import io.savagedev.buckets.util.ModReference;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraft.fluid.Fluid;
 
-@Mod(ModReference.MOD_ID)
-public class Buckets
+import java.util.function.Function;
+
+public class ItemDiamondBucket extends BaseItem
 {
-    public static ItemGroup modGroup = new ItemGroup(ModReference.MOD_ID) {
-        @Override
-        public ItemStack createIcon() {
-            return new ItemStack(ModItems.DIAMOND_BUCKET.get());
-        }
-    };
+    private final Fluid containedFluid;
 
-    public Buckets() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        modEventBus.register(new ModItems());
+    public ItemDiamondBucket(Function<Properties, Properties> properties, Fluid fluid) {
+        super(properties);
+        this.containedFluid = fluid;
     }
 }
