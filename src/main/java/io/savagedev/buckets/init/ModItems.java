@@ -45,7 +45,9 @@ public class ModItems
 {
     public static final List<Supplier<? extends Item>> ENTRIES = new ArrayList<>();
 
-    public static final RegistryObject<BaseItem> DIAMOND_BUCKET = register(ModNames.Items.DIAMOND_BUCKET, () -> new ItemDiamondBucket(p -> p.maxStackSize(1).group(Buckets.modGroup), Fluids.EMPTY));
+    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_EMPTY = register(ModNames.Items.DIAMOND_BUCKET_EMPTY, () -> new ItemDiamondBucket(Fluids.EMPTY));
+    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_WATER = register(ModNames.Items.DIAMOND_BUCKET_WATER, () -> new ItemDiamondBucket(Fluids.WATER));
+    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_LAVA = register(ModNames.Items.DIAMOND_BUCKET_LAVA, () -> new ItemDiamondBucket(Fluids.LAVA));
 
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {

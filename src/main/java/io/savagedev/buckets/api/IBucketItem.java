@@ -1,7 +1,7 @@
-package io.savagedev.buckets.items;
+package io.savagedev.buckets.api;
 
 /*
- * ItemDiamondBucket.java
+ * IBucketItem.java
  * Copyright (C) 2020 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,30 +23,13 @@ package io.savagedev.buckets.items;
  * THE SOFTWARE.
  */
 
-import io.savagedev.buckets.Buckets;
-import io.savagedev.buckets.api.IBucketItem;
-import io.savagedev.buckets.init.ModItems;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 
-public class ItemDiamondBucket extends BaseItemDamageableBucket implements IBucketItem
+public interface IBucketItem
 {
-    public ItemDiamondBucket(Fluid fluid) {
-        super(p -> (p.group(Buckets.modGroup).maxStackSize(1).maxDamage(256)), fluid);
-    }
+    Item getEmptyBucketItem();
 
-    @Override
-    public Item getEmptyBucketItem() {
-        return ModItems.DIAMOND_BUCKET_EMPTY.get();
-    }
+    Item getLavaBucketItem();
 
-    @Override
-    public Item getLavaBucketItem() {
-        return ModItems.DIAMOND_BUCKET_LAVA.get();
-    }
-
-    @Override
-    public Item getWaterBucketItem() {
-        return ModItems.DIAMOND_BUCKET_WATER.get();
-    }
+    Item getWaterBucketItem();
 }

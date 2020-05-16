@@ -27,6 +27,8 @@ public class ModNames
 {
     public static final class Items
     {
-        public static final String DIAMOND_BUCKET = "diamond_bucket";
+        public static final String DIAMOND_BUCKET_EMPTY = "diamond_bucket_empty";
+        public static final String DIAMOND_BUCKET_WATER = "diamond_bucket_water";
+        public static final String DIAMOND_BUCKET_LAVA = "diamond_bucket_lava";
     }
 }

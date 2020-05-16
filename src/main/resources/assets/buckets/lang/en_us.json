@@ -1,3 +1,7 @@
 {
-  "item.buckets:diamond_bucket": "Diamond Bucket"
+  "itemGroup.buckets": "Buckets",
+
+  "item.buckets.diamond_bucket_empty": "Diamond Bucket",
+  "item.buckets.diamond_bucket_water": "Diamond Water Bucket",
+  "item.buckets.diamond_bucket_lava": "Diamond Lava Bucket"
 }

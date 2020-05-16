@@ -38,7 +38,7 @@ public class Buckets
     public static ItemGroup modGroup = new ItemGroup(ModReference.MOD_ID) {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(ModItems.DIAMOND_BUCKET.get());
+            return new ItemStack(ModItems.DIAMOND_BUCKET_EMPTY.get());
         }
     };
 
