@@ -32,11 +32,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
@@ -48,11 +50,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.Function;
 
 public class BaseItemDamageableBucket extends BaseItem
@@ -114,8 +119,10 @@ public class BaseItemDamageableBucket extends BaseItem
                             CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerIn, getBlockPos, bucket);
                         }
 
-                        bucket.damageItem(1, playerIn, (event) -> {
-                            event.sendBreakAnimation(handIn);
+                        // Temp add item back to inv after broken
+                        bucket.damageItem(100, playerIn, (playerEntity) -> {
+                            playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
+                            playerEntity.addItemStackToInventory(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
                         });
 
                         return ActionResult.resultPass(bucket);
@@ -215,5 +222,14 @@ public class BaseItemDamageableBucket extends BaseItem
         SoundEvent soundevent = this.containedFluid.getAttributes().getEmptySound();
         if(soundevent == null) soundevent = this.containedFluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
         worldIn.playSound(playerEntity, pos, soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        if(stack.getMaxDamage() == 0) {
+            tooltip.add(new StringTextComponent("Uses: 1"));
+        } else {
+            tooltip.add(new StringTextComponent("Uses: " + (this.getMaxDamage(stack) - this.getDamage(stack)) / 100));
+        }
     }
 }

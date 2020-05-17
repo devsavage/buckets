@@ -27,4 +27,5 @@ public class ModReference
 {
     public static final String MOD_NAME = "Buckets";
     public static final String MOD_ID = "buckets";
+    public static final String MOD_DOMAIN = MOD_ID + ":";
 }

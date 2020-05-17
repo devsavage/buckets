@@ -3,5 +3,21 @@
 
   "item.buckets.diamond_bucket_empty": "Diamond Bucket",
   "item.buckets.diamond_bucket_water": "Diamond Water Bucket",
-  "item.buckets.diamond_bucket_lava": "Diamond Lava Bucket"
+  "item.buckets.diamond_bucket_lava": "Diamond Lava Bucket",
+
+  "item.buckets.gold_bucket_empty": "Golden Bucket",
+  "item.buckets.gold_bucket_water": "Golden Water Bucket",
+  "item.buckets.gold_bucket_lava": "Golden Lava Bucket",
+
+  "item.buckets.quartz_bucket_empty": "Quartz Bucket",
+  "item.buckets.quartz_bucket_water": "Quartz Water Bucket",
+  "item.buckets.quartz_bucket_lava": "Quartz Lava Bucket",
+
+  "item.buckets.obsidian_bucket_empty": "Obsidian Bucket",
+  "item.buckets.obsidian_bucket_water": "Obsidian Water Bucket",
+  "item.buckets.obsidian_bucket_lava": "Obsidian Lava Bucket",
+
+  "item.buckets.emerald_bucket_empty": "Emerald Bucket",
+  "item.buckets.emerald_bucket_water": "Emerald Water Bucket",
+  "item.buckets.emerald_bucket_lava": "Emerald Lava Bucket"
 }

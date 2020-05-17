@@ -23,11 +23,15 @@ package io.savagedev.buckets.init;
  * THE SOFTWARE.
  */
 
+import com.google.gson.JsonObject;
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.BaseItem;
-import io.savagedev.buckets.items.ItemDiamondBucket;
+import io.savagedev.buckets.items.ItemBigBucket;
+import io.savagedev.buckets.items.ItemBigBucketItem;
+import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.buckets.util.ModNames;
 import io.savagedev.buckets.util.ModReference;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -37,6 +41,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -45,9 +51,25 @@ public class ModItems
 {
     public static final List<Supplier<? extends Item>> ENTRIES = new ArrayList<>();
 
-    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_EMPTY = register(ModNames.Items.DIAMOND_BUCKET_EMPTY, () -> new ItemDiamondBucket(Fluids.EMPTY));
-    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_WATER = register(ModNames.Items.DIAMOND_BUCKET_WATER, () -> new ItemDiamondBucket(Fluids.WATER));
-    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_LAVA = register(ModNames.Items.DIAMOND_BUCKET_LAVA, () -> new ItemDiamondBucket(Fluids.LAVA));
+    public static final RegistryObject<BaseItem> QUARTZ_BUCKET_EMPTY = registerBigBucket(ItemBigBucketItem.QUARTZ_BUCKET_EMPTY);
+    public static final RegistryObject<BaseItem> QUARTZ_BUCKET_WATER = registerBigBucket(ItemBigBucketItem.QUARTZ_BUCKET_WATER);
+    public static final RegistryObject<BaseItem> QUARTZ_BUCKET_LAVA = registerBigBucket(ItemBigBucketItem.QUARTZ_BUCKET_LAVA);
+
+    public static final RegistryObject<BaseItem> OBSIDIAN_BUCKET_EMPTY = registerBigBucket(ItemBigBucketItem.OBSIDIAN_BUCKET_EMPTY);
+    public static final RegistryObject<BaseItem> OBSIDIAN_BUCKET_WATER = registerBigBucket(ItemBigBucketItem.OBSIDIAN_BUCKET_WATER);
+    public static final RegistryObject<BaseItem> OBSIDIAN_BUCKET_LAVA = registerBigBucket(ItemBigBucketItem.OBSIDIAN_BUCKET_LAVA);
+
+    public static final RegistryObject<BaseItem> EMERALD_BUCKET_EMPTY = registerBigBucket(ItemBigBucketItem.EMERALD_BUCKET_EMPTY);
+    public static final RegistryObject<BaseItem> EMERALD_BUCKET_WATER = registerBigBucket(ItemBigBucketItem.EMERALD_BUCKET_WATER);
+    public static final RegistryObject<BaseItem> EMERALD_BUCKET_LAVA = registerBigBucket(ItemBigBucketItem.EMERALD_BUCKET_LAVA);
+
+    public static final RegistryObject<BaseItem> GOLD_BUCKET_EMPTY = registerBigBucket(ItemBigBucketItem.GOLD_BUCKET_EMPTY);
+    public static final RegistryObject<BaseItem> GOLD_BUCKET_WATER = registerBigBucket(ItemBigBucketItem.GOLD_BUCKET_WATER);
+    public static final RegistryObject<BaseItem> GOLD_BUCKET_LAVA = registerBigBucket(ItemBigBucketItem.GOLD_BUCKET_LAVA);
+
+    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_EMPTY = registerBigBucket(ItemBigBucketItem.DIAMOND_BUCKET_EMPTY);
+    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_WATER = registerBigBucket(ItemBigBucketItem.DIAMOND_BUCKET_WATER);
+    public static final RegistryObject<BaseItem> DIAMOND_BUCKET_LAVA = registerBigBucket(ItemBigBucketItem.DIAMOND_BUCKET_LAVA);
 
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {
@@ -60,9 +82,43 @@ public class ModItems
         return register(name, () -> new BaseItem(p -> p.group(Buckets.modGroup)));
     }
 
+    private static <T extends Item> RegistryObject<T> registerBigBucket(ItemBigBucketItem bucketItem) {
+        generateModelFile(bucketItem.getEmptyBucket());
+        generateModelFile(bucketItem.getWaterBucket());
+        generateModelFile(bucketItem.getLavaBucket());
+
+        return register(bucketItem.getName(), () -> new ItemBigBucket(bucketItem));
+    }
+
     private static <T extends Item> RegistryObject<T> register(String name, Supplier<? extends Item> item) {
         ResourceLocation loc = new ResourceLocation(ModReference.MOD_ID, name);
         ENTRIES.add(() -> item.get().setRegistryName(loc));
         return RegistryObject.of(loc, ForgeRegistries.ITEMS);
+    }
+
+    private static void generateModelFile(String itemName) {
+        JsonObject parent = new JsonObject();
+        JsonObject layers = new JsonObject();
+
+        parent.addProperty("parent", "item/generated");
+        layers.addProperty("layer0", ModReference.MOD_DOMAIN + "item/" + itemName);
+        parent.add("textures", layers);
+
+        try {
+            File file = new File("../src/main/resources/assets/buckets/models/item/" + itemName + ".json");
+
+            if(!file.exists()) {
+                file.createNewFile();
+
+                FileWriter writer = new FileWriter(file);
+                writer.write(parent.toString());
+                writer.flush();
+                writer.close();
+                LogHelper.info("Generated model file for " + itemName);
+            }
+        } catch (Exception e) {
+            LogHelper.error("Error generating model file for " + itemName);
+            e.printStackTrace();
+        }
     }
 }
