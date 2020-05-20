@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "# #",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "result": {
+    "item": "buckets:quartz_bucket_empty",
+    "count": 1
+  }
+}
