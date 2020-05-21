@@ -1,4 +1,4 @@
-package io.savagedev.buckets.items;
+package io.savagedev.buckets.items.base;
 
 /*
  * BaseItemDamageableBucket.java
@@ -25,7 +25,7 @@ package io.savagedev.buckets.items;
 
 import io.savagedev.buckets.api.IBucketItem;
 import io.savagedev.buckets.helpers.ItemHelper;
-import io.savagedev.buckets.init.ModItems;
+import io.savagedev.buckets.items.ItemBigBucket;
 import io.savagedev.buckets.util.LogHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
@@ -38,12 +38,9 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -120,10 +117,12 @@ public class BaseItemDamageableBucket extends BaseItem
                         }
 
                         // Temp add item back to inv after broken
-                        bucket.damageItem(100, playerIn, (playerEntity) -> {
-                            playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
-                            playerEntity.addItemStackToInventory(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
-                        });
+                        if(bucket.getItem() instanceof ItemBigBucket) {
+                            bucket.damageItem(100, playerIn, (playerEntity) -> {
+                                playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
+                                playerEntity.addItemStackToInventory(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
+                            });
+                        }
 
                         return ActionResult.resultPass(bucket);
                     } else {
@@ -222,14 +221,5 @@ public class BaseItemDamageableBucket extends BaseItem
         SoundEvent soundevent = this.containedFluid.getAttributes().getEmptySound();
         if(soundevent == null) soundevent = this.containedFluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
         worldIn.playSound(playerEntity, pos, soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if(stack.getMaxDamage() == 0) {
-            tooltip.add(new StringTextComponent("Uses: 1"));
-        } else {
-            tooltip.add(new StringTextComponent("Uses: " + (this.getMaxDamage(stack) - this.getDamage(stack)) / 100));
-        }
     }
 }

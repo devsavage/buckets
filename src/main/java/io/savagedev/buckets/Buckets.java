@@ -23,13 +23,17 @@ package io.savagedev.buckets;
  * THE SOFTWARE.
  */
 
+import io.savagedev.buckets.handler.TimedBucketTickHandler;
 import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.util.ModReference;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ModReference.MOD_ID)
@@ -45,6 +49,12 @@ public class Buckets
     public Buckets() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        modEventBus.register(this);
         modEventBus.register(new ModItems());
+    }
+
+    @SubscribeEvent
+    public void onCommonSetup(FMLCommonSetupEvent event) {
+        MinecraftForge.EVENT_BUS.register(new TimedBucketTickHandler());
     }
 }

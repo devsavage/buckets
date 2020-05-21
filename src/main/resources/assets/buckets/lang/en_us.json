@@ -19,5 +19,17 @@
 
   "item.buckets.emerald_bucket_empty": "Emerald Bucket",
   "item.buckets.emerald_bucket_water": "Emerald Water Bucket",
-  "item.buckets.emerald_bucket_lava": "Emerald Lava Bucket"
+  "item.buckets.emerald_bucket_lava": "Emerald Lava Bucket",
+
+  "item.buckets.wooden_bucket_empty": "Wooden Bucket",
+  "item.buckets.wooden_bucket_water": "Wooden Water Bucket",
+  "item.buckets.wooden_bucket_lava": "Wooden Lava Bucket",
+
+  "item.buckets.cobblestone_bucket_empty": "Cobblestone Bucket",
+  "item.buckets.cobblestone_bucket_water": "Cobblestone Water Bucket",
+  "item.buckets.cobblestone_bucket_lava": "Cobblestone Lava Bucket",
+
+  "item.buckets.smoothstone_bucket_empty": "Smoothstone Bucket",
+  "item.buckets.smoothstone_bucket_water": "Smoothstone Water Bucket",
+  "item.buckets.smoothstone_bucket_lava": "Smoothstone Lava Bucket"
 }

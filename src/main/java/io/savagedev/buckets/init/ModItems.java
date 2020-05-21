@@ -25,14 +25,13 @@ package io.savagedev.buckets.init;
 
 import com.google.gson.JsonObject;
 import io.savagedev.buckets.Buckets;
-import io.savagedev.buckets.items.BaseItem;
+import io.savagedev.buckets.items.ItemTimedBucket;
+import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.buckets.items.ItemBigBucket;
-import io.savagedev.buckets.items.ItemBigBucketItem;
+import io.savagedev.buckets.items.enums.ItemBigBucketItem;
+import io.savagedev.buckets.items.enums.ItemTimedBucketItem;
 import io.savagedev.buckets.util.LogHelper;
-import io.savagedev.buckets.util.ModNames;
 import io.savagedev.buckets.util.ModReference;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -71,6 +70,18 @@ public class ModItems
     public static final RegistryObject<BaseItem> DIAMOND_BUCKET_WATER = registerBigBucket(ItemBigBucketItem.DIAMOND_BUCKET_WATER);
     public static final RegistryObject<BaseItem> DIAMOND_BUCKET_LAVA = registerBigBucket(ItemBigBucketItem.DIAMOND_BUCKET_LAVA);
 
+    public static final RegistryObject<BaseItem> WOODEN_BUCKET_EMPTY = registerTimedBucket(ItemTimedBucketItem.WOODEN_BUCKET_EMPTY);
+    public static final RegistryObject<BaseItem> WOODEN_BUCKET_WATER = registerTimedBucket(ItemTimedBucketItem.WOODEN_BUCKET_WATER);
+    public static final RegistryObject<BaseItem> WOODEN_BUCKET_LAVA = registerTimedBucket(ItemTimedBucketItem.WOODEN_BUCKET_LAVA);
+
+    public static final RegistryObject<BaseItem> COBBLESTONE_BUCKET_EMPTY = registerTimedBucket(ItemTimedBucketItem.COBBLESTONE_BUCKET_EMPTY);
+    public static final RegistryObject<BaseItem> COBBLESTONE_BUCKET_WATER = registerTimedBucket(ItemTimedBucketItem.COBBLESTONE_BUCKET_WATER);
+    public static final RegistryObject<BaseItem> COBBLESTONE_BUCKET_LAVA = registerTimedBucket(ItemTimedBucketItem.COBBLESTONE_BUCKET_LAVA);
+
+    public static final RegistryObject<BaseItem> SMOOTHSTONE_BUCKET_EMPTY = registerTimedBucket(ItemTimedBucketItem.SMOOTHSTONE_BUCKET_EMPTY);
+    public static final RegistryObject<BaseItem> SMOOTHSTONE_BUCKET_WATER = registerTimedBucket(ItemTimedBucketItem.SMOOTHSTONE_BUCKET_WATER);
+    public static final RegistryObject<BaseItem> SMOOTHSTONE_BUCKET_LAVA = registerTimedBucket(ItemTimedBucketItem.SMOOTHSTONE_BUCKET_LAVA);
+
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
@@ -88,6 +99,14 @@ public class ModItems
         generateModelFile(bucketItem.getLavaBucket());
 
         return register(bucketItem.getName(), () -> new ItemBigBucket(bucketItem));
+    }
+
+    private static <T extends Item> RegistryObject<T> registerTimedBucket(ItemTimedBucketItem bucketItem) {
+        generateModelFile(bucketItem.getEmptyBucket());
+        generateModelFile(bucketItem.getWaterBucket());
+        generateModelFile(bucketItem.getLavaBucket());
+
+        return register(bucketItem.getName(), () -> new ItemTimedBucket(bucketItem));
     }
 
     private static <T extends Item> RegistryObject<T> register(String name, Supplier<? extends Item> item) {

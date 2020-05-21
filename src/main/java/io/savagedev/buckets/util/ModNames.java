@@ -31,4 +31,9 @@ public class ModNames
         public static final String DIAMOND_BUCKET_WATER = "diamond_bucket_water";
         public static final String DIAMOND_BUCKET_LAVA = "diamond_bucket_lava";
     }
+
+    public static final class NBT
+    {
+        public static final String TIMED_BUCKET_TIMER_TAG = "TimedBucketTimeLeft";
+    }
 }

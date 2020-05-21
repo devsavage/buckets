@@ -1,4 +1,4 @@
-package io.savagedev.buckets.items;
+package io.savagedev.buckets.items.base;
 
 /*
  * BaseItem.java

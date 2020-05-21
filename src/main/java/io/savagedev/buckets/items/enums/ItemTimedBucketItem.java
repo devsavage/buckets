@@ -1,7 +1,7 @@
-package io.savagedev.buckets.items;
+package io.savagedev.buckets.items.enums;
 
 /*
- * ItemBigBucketItem.java
+ * ItemTimedBucketItem.java
  * Copyright (C) 2020 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,40 +30,32 @@ import net.minecraft.util.IStringSerializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public enum ItemBigBucketItem implements IStringSerializable
+public enum ItemTimedBucketItem implements IStringSerializable
 {
-    OBSIDIAN_BUCKET_EMPTY("obsidian_bucket", Fluids.EMPTY, 0),
-    OBSIDIAN_BUCKET_LAVA("obsidian_bucket", Fluids.LAVA,  300),
-    OBSIDIAN_BUCKET_WATER("obsidian_bucket", Fluids.WATER,  300),
+    WOODEN_BUCKET_EMPTY("wooden_bucket", Fluids.EMPTY, 0),
+    WOODEN_BUCKET_WATER("wooden_bucket", Fluids.WATER, 20),
+    WOODEN_BUCKET_LAVA("wooden_bucket", Fluids.LAVA, 20),
 
-    GOLD_BUCKET_EMPTY("gold_bucket", Fluids.EMPTY, 0),
-    GOLD_BUCKET_LAVA("gold_bucket", Fluids.LAVA,  400),
-    GOLD_BUCKET_WATER("gold_bucket", Fluids.WATER,  400),
+    COBBLESTONE_BUCKET_EMPTY("cobblestone_bucket", Fluids.EMPTY, 0),
+    COBBLESTONE_BUCKET_WATER("cobblestone_bucket", Fluids.WATER, 60),
+    COBBLESTONE_BUCKET_LAVA("cobblestone_bucket", Fluids.LAVA, 60),
 
-    EMERALD_BUCKET_EMPTY("emerald_bucket", Fluids.EMPTY, 0),
-    EMERALD_BUCKET_LAVA("emerald_bucket", Fluids.LAVA,  500),
-    EMERALD_BUCKET_WATER("emerald_bucket", Fluids.WATER,  500),
+    SMOOTHSTONE_BUCKET_EMPTY("smoothstone_bucket", Fluids.EMPTY, 0),
+    SMOOTHSTONE_BUCKET_WATER("smoothstone_bucket", Fluids.WATER, 300),
+    SMOOTHSTONE_BUCKET_LAVA("smoothstone_bucket", Fluids.LAVA, 300);
 
-    QUARTZ_BUCKET_EMPTY("quartz_bucket", Fluids.EMPTY, 0),
-    QUARTZ_BUCKET_LAVA("quartz_bucket", Fluids.LAVA,  500),
-    QUARTZ_BUCKET_WATER("quartz_bucket", Fluids.WATER,  500),
-
-    DIAMOND_BUCKET_EMPTY("diamond_bucket", Fluids.EMPTY, 0),
-    DIAMOND_BUCKET_LAVA("diamond_bucket", Fluids.LAVA,  600),
-    DIAMOND_BUCKET_WATER("diamond_bucket", Fluids.WATER,  600);
-
-    private static final ItemBigBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemBigBucketItem::getName)).toArray((bucketName) -> {
-        return new ItemBigBucketItem[bucketName];
+    private static final ItemTimedBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemTimedBucketItem::getName)).toArray((bucketName) -> {
+        return new ItemTimedBucketItem[bucketName];
     });
 
     private final String bucketName;
     private final Fluid fluidDef;
-    private final int bucketMaxDamage;
+    private final int bucketMaxTime;
 
-    private ItemBigBucketItem(String bucketNameIn, Fluid fluidDef, int bucketMaxDamageIn) {
+    private ItemTimedBucketItem(String bucketNameIn, Fluid fluidDef, int bucketMaxTimeIn) {
         this.bucketName = bucketNameIn;
         this.fluidDef = fluidDef;
-        this.bucketMaxDamage = bucketMaxDamageIn;
+        this.bucketMaxTime = bucketMaxTimeIn;
     }
 
     public Fluid getFluidType() {
@@ -87,7 +79,7 @@ public enum ItemBigBucketItem implements IStringSerializable
         return this.bucketName + "_" + this.fluidDef.getRegistryName().getPath();
     }
 
-    public int getBucketDamage() {
-        return bucketMaxDamage;
+    public int getBucketMaxTime() {
+        return bucketMaxTime;
     }
 }

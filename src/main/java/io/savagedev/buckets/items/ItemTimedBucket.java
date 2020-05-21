@@ -1,7 +1,7 @@
 package io.savagedev.buckets.items;
 
 /*
- * ItemBigBucket.java
+ * ItemTimedBucket.java
  * Copyright (C) 2020 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,11 +26,17 @@ package io.savagedev.buckets.items;
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.api.IBucketItem;
 import io.savagedev.buckets.items.base.BaseItemDamageableBucket;
-import io.savagedev.buckets.items.enums.ItemBigBucketItem;
+import io.savagedev.buckets.items.enums.ItemTimedBucketItem;
+import io.savagedev.buckets.util.LogHelper;
+import io.savagedev.buckets.util.ModNames;
 import io.savagedev.buckets.util.ModReference;
+import io.savagedev.buckets.util.NBTHelper;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -41,12 +47,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class ItemBigBucket extends BaseItemDamageableBucket implements IBucketItem
+public class ItemTimedBucket extends BaseItemDamageableBucket implements IBucketItem
 {
-    public final ItemBigBucketItem bucketItem;
+    public final ItemTimedBucketItem bucketItem;
 
-    public ItemBigBucket(ItemBigBucketItem bucketItem) {
-        super(p -> (p.group(Buckets.modGroup).maxStackSize(1).maxDamage(bucketItem.getBucketDamage())), bucketItem.getFluidType());
+    public ItemTimedBucket(ItemTimedBucketItem bucketItem) {
+        super(p -> (p.group(Buckets.modGroup).maxStackSize(1).maxDamage(bucketItem.getBucketMaxTime())), bucketItem.getFluidType());
         this.bucketItem = bucketItem;
     }
 
@@ -67,10 +73,6 @@ public class ItemBigBucket extends BaseItemDamageableBucket implements IBucketIt
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if(stack.getMaxDamage() == 0) {
-            tooltip.add(new StringTextComponent("Uses: 1"));
-        } else {
-            tooltip.add(new StringTextComponent("Uses: " + (this.getMaxDamage(stack) - this.getDamage(stack)) / 100));
-        }
+        tooltip.add(new StringTextComponent("Seconds Remaining: " + (this.bucketItem.getBucketMaxTime() - this.getDamage(stack))));
     }
 }
