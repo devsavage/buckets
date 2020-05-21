@@ -26,6 +26,7 @@ package io.savagedev.buckets.items;
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.api.IBucketItem;
 import io.savagedev.buckets.items.base.BaseItemDamageableBucket;
+import io.savagedev.buckets.items.enums.DamageType;
 import io.savagedev.buckets.items.enums.ItemBigBucketItem;
 import io.savagedev.buckets.util.ModReference;
 import net.minecraft.client.util.ITooltipFlag;
@@ -46,7 +47,7 @@ public class ItemBigBucket extends BaseItemDamageableBucket implements IBucketIt
     public final ItemBigBucketItem bucketItem;
 
     public ItemBigBucket(ItemBigBucketItem bucketItem) {
-        super(p -> (p.group(Buckets.modGroup).maxStackSize(1).maxDamage(bucketItem.getBucketDamage())), bucketItem.getFluidType());
+        super(p -> (p.group(Buckets.modGroup).maxStackSize(1).maxDamage(bucketItem.getBucketDamage())), bucketItem.getFluidType(), DamageType.BIG);
         this.bucketItem = bucketItem;
     }
 

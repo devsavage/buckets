@@ -1,7 +1,7 @@
-package io.savagedev.buckets.util;
+package io.savagedev.buckets.items.enums;
 
 /*
- * ModNames.java
+ * DamageType.java
  * Copyright (C) 2020 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,24 +23,9 @@ package io.savagedev.buckets.util;
  * THE SOFTWARE.
  */
 
-public class ModNames
+public enum DamageType
 {
-    public static final class Items
-    {
-        public static final String DIAMOND_BUCKET = "diamond_bucket";
-        public static final String GOLD_BUCKET = "gold_bucket";
-        public static final String EMERALD_BUCKET = "emerald_bucket";
-        public static final String OBSIDIAN_BUCKET = "obsidian_bucket";
-        public static final String QUARTZ_BUCKET = "quartz_bucket";
-
-        public static final String WOODEN_BUCKET = "wooden_bucket";
-        public static final String COBBLESTONE_BUCKET = "cobblestone_bucket";
-        public static final String SMOOTHSTONE_BUCKET = "smoothstone_bucket";
-
-        public static final String UNFIRED_CLAY_BUCKET = "unfired_clay_bucket";
-
-        public static final String FIRED_CLAY_BUCKET = "fired_clay_bucket_empty";
-        public static final String FIRED_CLAY_BUCKET_WATER = "fired_clay_bucket_water";
-        public static final String FIRED_CLAY_BUCKET_LAVA = "fired_clay_bucket_lava";
-    }
+    NORMAL,
+    BIG,
+    TIMED
 }

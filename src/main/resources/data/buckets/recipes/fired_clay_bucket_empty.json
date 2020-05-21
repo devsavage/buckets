@@ -1,0 +1,8 @@
+{
+  "type": "smelting",
+  "ingredient": {
+    "item": "buckets:unfired_clay_bucket"
+  },
+  "result": "buckets:fired_clay_bucket_empty",
+  "cookingtime": 200
+}

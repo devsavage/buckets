@@ -26,6 +26,7 @@ package io.savagedev.buckets.items.base;
 import io.savagedev.buckets.api.IBucketItem;
 import io.savagedev.buckets.helpers.ItemHelper;
 import io.savagedev.buckets.items.ItemBigBucket;
+import io.savagedev.buckets.items.enums.DamageType;
 import io.savagedev.buckets.util.LogHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
@@ -59,11 +60,13 @@ import java.util.function.Function;
 
 public class BaseItemDamageableBucket extends BaseItem
 {
-    private final Fluid containedFluid;
+    protected DamageType damageType;
+    protected final Fluid containedFluid;
 
-    public BaseItemDamageableBucket(Function<Properties, Properties> properties, Fluid fluid) {
+    public BaseItemDamageableBucket(Function<Properties, Properties> properties, Fluid fluid, DamageType damageType) {
         super(properties);
         this.containedFluid = fluid;
+        this.damageType = damageType;
     }
 
     @Override
@@ -102,7 +105,7 @@ public class BaseItemDamageableBucket extends BaseItem
                             playerIn.playSound(soundevent, 1.0F, 1.0F);
 
                             ItemStack filledBucket = this.fillBucket(bucket, playerIn, getFilledBucket(fluid.getFluid()).getItem());
-                            LogHelper.debug(filledBucket);
+
                             return ActionResult.resultSuccess(filledBucket);
                         }
                     }
@@ -116,12 +119,23 @@ public class BaseItemDamageableBucket extends BaseItem
                             CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerIn, getBlockPos, bucket);
                         }
 
-                        // Temp add item back to inv after broken
-                        if(bucket.getItem() instanceof ItemBigBucket) {
-                            bucket.damageItem(100, playerIn, (playerEntity) -> {
-                                playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
-                                playerEntity.addItemStackToInventory(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
-                            });
+                        //TODO: Fix this to replace item in actual slot and not add to inventory
+                        switch (this.damageType) {
+                            case BIG:
+                                bucket.damageItem(100, playerIn, (playerEntity) -> {
+                                    playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
+                                    playerEntity.addItemStackToInventory(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
+                                });
+                                break;
+                            case NORMAL:
+                                bucket.damageItem(1, playerIn, (playerEntity) -> {
+                                    playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
+                                    playerEntity.addItemStackToInventory(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
+                                });
+                            case TIMED:
+                                return ActionResult.resultPass(bucket);
+                            default:
+                                return ActionResult.resultSuccess(bucket);
                         }
 
                         return ActionResult.resultPass(bucket);
@@ -199,7 +213,7 @@ public class BaseItemDamageableBucket extends BaseItem
         }
     }
 
-    private ItemStack getFilledBucket(Fluid fluid) {
+    protected ItemStack getFilledBucket(Fluid fluid) {
         if(this instanceof IBucketItem) {
             if(fluid.getFluid() == Fluids.LAVA) {
                 return new ItemStack(((IBucketItem)this).getLavaBucketItem());
@@ -213,11 +227,11 @@ public class BaseItemDamageableBucket extends BaseItem
         return ItemStack.EMPTY;
     }
 
-    private boolean canTargetTakeFluid(World world, BlockPos targetPos, BlockState targetState) {
+    protected boolean canTargetTakeFluid(World world, BlockPos targetPos, BlockState targetState) {
         return targetState.getBlock() instanceof ILiquidContainer && ((ILiquidContainer)targetState.getBlock()).canContainFluid(world, targetPos, targetState, this.containedFluid);
     }
 
-    private void playEmptySound(PlayerEntity playerEntity, IWorld worldIn, BlockPos pos) {
+    protected void playEmptySound(PlayerEntity playerEntity, IWorld worldIn, BlockPos pos) {
         SoundEvent soundevent = this.containedFluid.getAttributes().getEmptySound();
         if(soundevent == null) soundevent = this.containedFluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
         worldIn.playSound(playerEntity, pos, soundevent, SoundCategory.BLOCKS, 1.0F, 1.0F);

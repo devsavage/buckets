@@ -23,6 +23,7 @@ package io.savagedev.buckets.items.enums;
  * THE SOFTWARE.
  */
 
+import io.savagedev.buckets.util.ModNames;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.IStringSerializable;
@@ -32,17 +33,17 @@ import java.util.Comparator;
 
 public enum ItemTimedBucketItem implements IStringSerializable
 {
-    WOODEN_BUCKET_EMPTY("wooden_bucket", Fluids.EMPTY, 0),
-    WOODEN_BUCKET_WATER("wooden_bucket", Fluids.WATER, 20),
-    WOODEN_BUCKET_LAVA("wooden_bucket", Fluids.LAVA, 20),
+    WOODEN_BUCKET_EMPTY(ModNames.Items.WOODEN_BUCKET, Fluids.EMPTY, 0),
+    WOODEN_BUCKET_WATER(ModNames.Items.WOODEN_BUCKET, Fluids.WATER, 20),
+    WOODEN_BUCKET_LAVA(ModNames.Items.WOODEN_BUCKET, Fluids.LAVA, 20),
 
-    COBBLESTONE_BUCKET_EMPTY("cobblestone_bucket", Fluids.EMPTY, 0),
-    COBBLESTONE_BUCKET_WATER("cobblestone_bucket", Fluids.WATER, 60),
-    COBBLESTONE_BUCKET_LAVA("cobblestone_bucket", Fluids.LAVA, 60),
+    COBBLESTONE_BUCKET_EMPTY(ModNames.Items.COBBLESTONE_BUCKET, Fluids.EMPTY, 0),
+    COBBLESTONE_BUCKET_WATER(ModNames.Items.COBBLESTONE_BUCKET, Fluids.WATER, 60),
+    COBBLESTONE_BUCKET_LAVA(ModNames.Items.COBBLESTONE_BUCKET, Fluids.LAVA, 60),
 
-    SMOOTHSTONE_BUCKET_EMPTY("smoothstone_bucket", Fluids.EMPTY, 0),
-    SMOOTHSTONE_BUCKET_WATER("smoothstone_bucket", Fluids.WATER, 300),
-    SMOOTHSTONE_BUCKET_LAVA("smoothstone_bucket", Fluids.LAVA, 300);
+    SMOOTHSTONE_BUCKET_EMPTY(ModNames.Items.SMOOTHSTONE_BUCKET, Fluids.EMPTY, 0),
+    SMOOTHSTONE_BUCKET_WATER(ModNames.Items.SMOOTHSTONE_BUCKET, Fluids.WATER, 300),
+    SMOOTHSTONE_BUCKET_LAVA(ModNames.Items.SMOOTHSTONE_BUCKET, Fluids.LAVA, 300);
 
     private static final ItemTimedBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemTimedBucketItem::getName)).toArray((bucketName) -> {
         return new ItemTimedBucketItem[bucketName];

@@ -26,6 +26,7 @@ package io.savagedev.buckets.items;
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.api.IBucketItem;
 import io.savagedev.buckets.items.base.BaseItemDamageableBucket;
+import io.savagedev.buckets.items.enums.DamageType;
 import io.savagedev.buckets.items.enums.ItemTimedBucketItem;
 import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.buckets.util.ModNames;
@@ -52,7 +53,7 @@ public class ItemTimedBucket extends BaseItemDamageableBucket implements IBucket
     public final ItemTimedBucketItem bucketItem;
 
     public ItemTimedBucket(ItemTimedBucketItem bucketItem) {
-        super(p -> (p.group(Buckets.modGroup).maxStackSize(1).maxDamage(bucketItem.getBucketMaxTime())), bucketItem.getFluidType());
+        super(p -> (p.group(Buckets.modGroup).maxStackSize(1).maxDamage(bucketItem.getBucketMaxTime())), bucketItem.getFluidType(), DamageType.NORMAL);
         this.bucketItem = bucketItem;
     }
 

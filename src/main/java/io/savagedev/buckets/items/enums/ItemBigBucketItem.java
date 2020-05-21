@@ -23,6 +23,7 @@ package io.savagedev.buckets.items.enums;
  * THE SOFTWARE.
  */
 
+import io.savagedev.buckets.util.ModNames;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.IStringSerializable;
@@ -32,25 +33,25 @@ import java.util.Comparator;
 
 public enum ItemBigBucketItem implements IStringSerializable
 {
-    OBSIDIAN_BUCKET_EMPTY("obsidian_bucket", Fluids.EMPTY, 0),
-    OBSIDIAN_BUCKET_LAVA("obsidian_bucket", Fluids.LAVA,  300),
-    OBSIDIAN_BUCKET_WATER("obsidian_bucket", Fluids.WATER,  300),
+    OBSIDIAN_BUCKET_EMPTY(ModNames.Items.OBSIDIAN_BUCKET, Fluids.EMPTY, 0),
+    OBSIDIAN_BUCKET_LAVA(ModNames.Items.OBSIDIAN_BUCKET, Fluids.LAVA,  300),
+    OBSIDIAN_BUCKET_WATER(ModNames.Items.OBSIDIAN_BUCKET, Fluids.WATER,  300),
 
-    GOLD_BUCKET_EMPTY("gold_bucket", Fluids.EMPTY, 0),
-    GOLD_BUCKET_LAVA("gold_bucket", Fluids.LAVA,  400),
-    GOLD_BUCKET_WATER("gold_bucket", Fluids.WATER,  400),
+    GOLD_BUCKET_EMPTY(ModNames.Items.GOLD_BUCKET, Fluids.EMPTY, 0),
+    GOLD_BUCKET_LAVA(ModNames.Items.GOLD_BUCKET, Fluids.LAVA,  400),
+    GOLD_BUCKET_WATER(ModNames.Items.GOLD_BUCKET, Fluids.WATER,  400),
 
-    EMERALD_BUCKET_EMPTY("emerald_bucket", Fluids.EMPTY, 0),
-    EMERALD_BUCKET_LAVA("emerald_bucket", Fluids.LAVA,  500),
-    EMERALD_BUCKET_WATER("emerald_bucket", Fluids.WATER,  500),
+    EMERALD_BUCKET_EMPTY(ModNames.Items.EMERALD_BUCKET, Fluids.EMPTY, 0),
+    EMERALD_BUCKET_LAVA(ModNames.Items.EMERALD_BUCKET, Fluids.LAVA,  500),
+    EMERALD_BUCKET_WATER(ModNames.Items.EMERALD_BUCKET, Fluids.WATER,  500),
 
-    QUARTZ_BUCKET_EMPTY("quartz_bucket", Fluids.EMPTY, 0),
-    QUARTZ_BUCKET_LAVA("quartz_bucket", Fluids.LAVA,  500),
-    QUARTZ_BUCKET_WATER("quartz_bucket", Fluids.WATER,  500),
+    QUARTZ_BUCKET_EMPTY(ModNames.Items.QUARTZ_BUCKET, Fluids.EMPTY, 0),
+    QUARTZ_BUCKET_LAVA(ModNames.Items.QUARTZ_BUCKET, Fluids.LAVA,  500),
+    QUARTZ_BUCKET_WATER(ModNames.Items.QUARTZ_BUCKET, Fluids.WATER,  500),
 
-    DIAMOND_BUCKET_EMPTY("diamond_bucket", Fluids.EMPTY, 0),
-    DIAMOND_BUCKET_LAVA("diamond_bucket", Fluids.LAVA,  600),
-    DIAMOND_BUCKET_WATER("diamond_bucket", Fluids.WATER,  600);
+    DIAMOND_BUCKET_EMPTY(ModNames.Items.DIAMOND_BUCKET, Fluids.EMPTY, 0),
+    DIAMOND_BUCKET_LAVA(ModNames.Items.DIAMOND_BUCKET, Fluids.LAVA,  600),
+    DIAMOND_BUCKET_WATER(ModNames.Items.DIAMOND_BUCKET, Fluids.WATER,  600);
 
     private static final ItemBigBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemBigBucketItem::getName)).toArray((bucketName) -> {
         return new ItemBigBucketItem[bucketName];

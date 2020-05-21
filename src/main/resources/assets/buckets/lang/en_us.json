@@ -31,5 +31,11 @@
 
   "item.buckets.smoothstone_bucket_empty": "Smoothstone Bucket",
   "item.buckets.smoothstone_bucket_water": "Smoothstone Water Bucket",
-  "item.buckets.smoothstone_bucket_lava": "Smoothstone Lava Bucket"
+  "item.buckets.smoothstone_bucket_lava": "Smoothstone Lava Bucket",
+
+  "item.buckets.fired_clay_bucket_empty": "Brick Bucket",
+  "item.buckets.fired_clay_bucket_water": "Brick Water Bucket",
+  "item.buckets.fired_clay_bucket_lava": "Brick Lava Bucket",
+
+  "item.buckets.unfired_clay_bucket": "Unfired Clay Bucket"
 }

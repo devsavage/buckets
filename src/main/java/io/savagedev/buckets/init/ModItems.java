@@ -25,13 +25,17 @@ package io.savagedev.buckets.init;
 
 import com.google.gson.JsonObject;
 import io.savagedev.buckets.Buckets;
+import io.savagedev.buckets.items.ItemFiredClayBucket;
 import io.savagedev.buckets.items.ItemTimedBucket;
 import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.buckets.items.ItemBigBucket;
 import io.savagedev.buckets.items.enums.ItemBigBucketItem;
 import io.savagedev.buckets.items.enums.ItemTimedBucketItem;
 import io.savagedev.buckets.util.LogHelper;
+import io.savagedev.buckets.util.ModNames;
 import io.savagedev.buckets.util.ModReference;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -82,6 +86,12 @@ public class ModItems
     public static final RegistryObject<BaseItem> SMOOTHSTONE_BUCKET_WATER = registerTimedBucket(ItemTimedBucketItem.SMOOTHSTONE_BUCKET_WATER);
     public static final RegistryObject<BaseItem> SMOOTHSTONE_BUCKET_LAVA = registerTimedBucket(ItemTimedBucketItem.SMOOTHSTONE_BUCKET_LAVA);
 
+    public static final RegistryObject<BaseItem> UNFIRED_CLAY_BUCKET = register(ModNames.Items.UNFIRED_CLAY_BUCKET, () -> new BaseItem(p -> p.group(Buckets.modGroup).maxStackSize(1)));
+
+    public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET = register(ModNames.Items.FIRED_CLAY_BUCKET, () -> new ItemFiredClayBucket(Fluids.EMPTY));
+    public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET_WATER = register(ModNames.Items.FIRED_CLAY_BUCKET_WATER, () -> new ItemFiredClayBucket(Fluids.WATER));
+    public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET_LAVA = register(ModNames.Items.FIRED_CLAY_BUCKET_LAVA, () -> new ItemFiredClayBucket(Fluids.LAVA));
+
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
@@ -111,7 +121,11 @@ public class ModItems
 
     private static <T extends Item> RegistryObject<T> register(String name, Supplier<? extends Item> item) {
         ResourceLocation loc = new ResourceLocation(ModReference.MOD_ID, name);
+
         ENTRIES.add(() -> item.get().setRegistryName(loc));
+
+        generateModelFile(name);
+
         return RegistryObject.of(loc, ForgeRegistries.ITEMS);
     }
 
