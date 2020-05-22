@@ -37,5 +37,7 @@
   "item.buckets.fired_clay_bucket_water": "Brick Water Bucket",
   "item.buckets.fired_clay_bucket_lava": "Brick Lava Bucket",
 
-  "item.buckets.unfired_clay_bucket": "Unfired Clay Bucket"
+  "item.buckets.unfired_clay_bucket": "Unfired Clay Bucket",
+
+  "item.buckets.icy_bucket": "Icy Bucket"
 }

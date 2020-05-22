@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "SSS",
+    "DSD",
+    " D "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:snowball"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "buckets:icy_bucket",
+    "count": 1
+  }
+}

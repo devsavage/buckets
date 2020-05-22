@@ -26,6 +26,7 @@ package io.savagedev.buckets.init;
 import com.google.gson.JsonObject;
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.ItemFiredClayBucket;
+import io.savagedev.buckets.items.ItemIcyBucket;
 import io.savagedev.buckets.items.ItemTimedBucket;
 import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.buckets.items.ItemBigBucket;
@@ -92,15 +93,13 @@ public class ModItems
     public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET_WATER = register(ModNames.Items.FIRED_CLAY_BUCKET_WATER, () -> new ItemFiredClayBucket(Fluids.WATER));
     public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET_LAVA = register(ModNames.Items.FIRED_CLAY_BUCKET_LAVA, () -> new ItemFiredClayBucket(Fluids.LAVA));
 
+    public static final RegistryObject<BaseItem> ICY_BUCKET = register(ModNames.Items.ICY_BUCKET, ItemIcyBucket::new);
+
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
 
         ENTRIES.stream().map(Supplier::get).forEach(registry::register);
-    }
-
-    private static <T extends Item> RegistryObject<T> register(String name) {
-        return register(name, () -> new BaseItem(p -> p.group(Buckets.modGroup)));
     }
 
     private static <T extends Item> RegistryObject<T> registerBigBucket(ItemBigBucketItem bucketItem) {
