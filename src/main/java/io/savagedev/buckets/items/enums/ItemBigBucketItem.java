@@ -53,7 +53,7 @@ public enum ItemBigBucketItem implements IStringSerializable
     DIAMOND_BUCKET_LAVA(ModNames.Items.DIAMOND_BUCKET, Fluids.LAVA,  600),
     DIAMOND_BUCKET_WATER(ModNames.Items.DIAMOND_BUCKET, Fluids.WATER,  600);
 
-    private static final ItemBigBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemBigBucketItem::getName)).toArray((bucketName) -> {
+    private static final ItemBigBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemBigBucketItem::getString)).toArray((bucketName) -> {
         return new ItemBigBucketItem[bucketName];
     });
 
@@ -83,12 +83,12 @@ public enum ItemBigBucketItem implements IStringSerializable
         return this.bucketName + "_water";
     }
 
-    @Override
-    public String getName() {
-        return this.bucketName + "_" + this.fluidDef.getRegistryName().getPath();
-    }
-
     public int getBucketDamage() {
         return bucketMaxDamage;
+    }
+
+    @Override
+    public String getString() {
+        return this.bucketName + "_" + this.fluidDef.getRegistryName().getPath();
     }
 }

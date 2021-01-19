@@ -45,7 +45,7 @@ public enum ItemTimedBucketItem implements IStringSerializable
     SMOOTHSTONE_BUCKET_WATER(ModNames.Items.SMOOTHSTONE_BUCKET, Fluids.WATER, 300),
     SMOOTHSTONE_BUCKET_LAVA(ModNames.Items.SMOOTHSTONE_BUCKET, Fluids.LAVA, 300);
 
-    private static final ItemTimedBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemTimedBucketItem::getName)).toArray((bucketName) -> {
+    private static final ItemTimedBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemTimedBucketItem::getString)).toArray((bucketName) -> {
         return new ItemTimedBucketItem[bucketName];
     });
 
@@ -76,7 +76,7 @@ public enum ItemTimedBucketItem implements IStringSerializable
     }
 
     @Override
-    public String getName() {
+    public String getString() {
         return this.bucketName + "_" + this.fluidDef.getRegistryName().getPath();
     }
 

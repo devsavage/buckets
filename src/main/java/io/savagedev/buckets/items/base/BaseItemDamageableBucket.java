@@ -159,7 +159,7 @@ public class BaseItemDamageableBucket extends BaseItem
             boolean canContainFluid = canTargetTakeFluid(world, targetPos, targetState);
 
             if (targetState.isAir(world, targetPos) || targetStateReplaceable || canContainFluid) {
-                if (world.dimension.doesWaterVaporize() && this.containedFluid.isIn(FluidTags.WATER)) {
+                if (world.getDimensionType().isUltrawarm() && this.containedFluid.isIn(FluidTags.WATER)) {
                     int posX = targetPos.getX();
                     int posY = targetPos.getY();
                     int posZ = targetPos.getZ();

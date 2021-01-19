@@ -107,7 +107,7 @@ public class ModItems
         generateModelFile(bucketItem.getWaterBucket());
         generateModelFile(bucketItem.getLavaBucket());
 
-        return register(bucketItem.getName(), () -> new ItemBigBucket(bucketItem));
+        return register(bucketItem.getString(), () -> new ItemBigBucket(bucketItem));
     }
 
     private static <T extends Item> RegistryObject<T> registerTimedBucket(ItemTimedBucketItem bucketItem) {
@@ -115,7 +115,7 @@ public class ModItems
         generateModelFile(bucketItem.getWaterBucket());
         generateModelFile(bucketItem.getLavaBucket());
 
-        return register(bucketItem.getName(), () -> new ItemTimedBucket(bucketItem));
+        return register(bucketItem.getString(), () -> new ItemTimedBucket(bucketItem));
     }
 
     private static <T extends Item> RegistryObject<T> register(String name, Supplier<? extends Item> item) {
