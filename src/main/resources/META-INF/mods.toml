@@ -1,4 +1,4 @@
-modLoader="javafml" #mandatory
+modLoader="javafml"
 loaderVersion="[31,)"
 issueTrackerURL="https://github.com/devsavage/buckets/issues"
 
@@ -6,8 +6,6 @@ issueTrackerURL="https://github.com/devsavage/buckets/issues"
 modId="buckets"
 version="${file.jarVersion}"
 displayName="Buckets"
-updateJSONURL="http://example.com"
-displayURL="http://example.com"
 logoFile=""
 credits="Forge"
 authors="savagedev"
@@ -15,9 +13,9 @@ description='''
 '''
 
 [[dependencies.buckets]]
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="[31,)" #mandatory
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.buckets]]
