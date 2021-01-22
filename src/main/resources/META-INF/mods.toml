@@ -4,14 +4,16 @@ issueTrackerURL="https://github.com/devsavage/buckets/issues"
 license="MIT"
 
 [[mods]]
-modId="buckets"
-version="${file.jarVersion}"
-displayName="Buckets"
-logoFile=""
-credits="Forge"
-authors="savagedev"
-description='''
-'''
+    modId="buckets"
+    version="${file.jarVersion}"
+    updateJSONURL="https://api.savagedev.io/mc-mods/buckets/versions?forge=true"
+    displayURL="https://nlcc.savagedev.io/minecraft-mods/buckets/"
+    displayName="Buckets"
+    logoFile=""
+    credits="Forge"
+    authors="savagedev"
+    description='''
+    '''
 
 
 [[dependencies.buckets]]
@@ -25,4 +27,10 @@ description='''
     mandatory=true
     versionRange="[1.16.4,1.17]"
     ordering="NONE"
+    side="BOTH"
+[[dependencies.buckets]]
+    modId="savagecore"
+    mandatory=true
+    versionRange="[1.16.4-2.0.0,]"
+    ordering="BEFORE"
     side="BOTH"

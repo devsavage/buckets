@@ -24,14 +24,20 @@ package io.savagedev.buckets;
  */
 
 import io.savagedev.buckets.handler.TimedBucketTickHandler;
+import io.savagedev.buckets.handler.UpdateMessageHandler;
 import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.util.ModReference;
+import io.savagedev.savagecore.util.updater.Updater;
+import io.savagedev.savagecore.util.updater.UpdaterUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -39,6 +45,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(ModReference.MOD_ID)
 public class Buckets
 {
+    public Updater UPDATER;
+
+    public static ModContainer MOD_CONTAINER;
+
     public static ItemGroup modGroup = new ItemGroup(ModReference.MOD_ID) {
         @Override
         public ItemStack createIcon() {
@@ -49,6 +59,11 @@ public class Buckets
     public Buckets() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        MOD_CONTAINER = ModLoadingContext.get().getActiveContainer();
+        UPDATER = new Updater().setModId(ModReference.MOD_ID)
+                .setMinecraftVersion(Minecraft.getInstance().getVersion())
+                .setCurrentVersion(MOD_CONTAINER.getModInfo().getVersion().toString());
+
         modEventBus.register(this);
         modEventBus.register(new ModItems());
     }
@@ -56,5 +71,8 @@ public class Buckets
     @SubscribeEvent
     public void onCommonSetup(FMLCommonSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(new TimedBucketTickHandler());
+        MinecraftForge.EVENT_BUS.register(new UpdateMessageHandler(UPDATER));
+
+        UpdaterUtils.initializeUpdateCheck(UPDATER);
     }
 }

@@ -25,8 +25,8 @@ package io.savagedev.buckets.items;
 
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.api.IBucketItem;
-import io.savagedev.buckets.helpers.ItemHelper;
 import io.savagedev.buckets.items.base.BaseItem;
+import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;

@@ -39,5 +39,9 @@
 
   "item.buckets.unfired_clay_bucket": "Unfired Clay Bucket",
 
-  "item.buckets.icy_bucket": "Icy Bucket"
+  "item.buckets.icy_bucket": "Icy Bucket",
+
+  "item.buckets.slime_bucket": "Slime Bucket",
+
+  "item.buckets.magma_cream_bucket": "Magma Slime Bucket"
 }

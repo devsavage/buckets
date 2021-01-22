@@ -25,11 +25,8 @@ package io.savagedev.buckets.init;
 
 import com.google.gson.JsonObject;
 import io.savagedev.buckets.Buckets;
-import io.savagedev.buckets.items.ItemFiredClayBucket;
-import io.savagedev.buckets.items.ItemIcyBucket;
-import io.savagedev.buckets.items.ItemTimedBucket;
+import io.savagedev.buckets.items.*;
 import io.savagedev.buckets.items.base.BaseItem;
-import io.savagedev.buckets.items.ItemBigBucket;
 import io.savagedev.buckets.items.enums.ItemBigBucketItem;
 import io.savagedev.buckets.items.enums.ItemTimedBucketItem;
 import io.savagedev.buckets.util.LogHelper;
@@ -94,6 +91,9 @@ public class ModItems
     public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET_LAVA = register(ModNames.Items.FIRED_CLAY_BUCKET_LAVA, () -> new ItemFiredClayBucket(Fluids.LAVA));
 
     public static final RegistryObject<BaseItem> ICY_BUCKET = register(ModNames.Items.ICY_BUCKET, ItemIcyBucket::new);
+
+    public static final RegistryObject<BaseItem> SLIME_BUCKET = register(ModNames.Items.SLIME_BUCKET, ItemSlimeBucket::new);
+    public static final RegistryObject<BaseItem> MAGMA_CREAM_BUCKET = register(ModNames.Items.MAGMA_CREAM_BUCKET, ItemMagmaCreamBucket::new);
 
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {

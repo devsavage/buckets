@@ -24,10 +24,10 @@ package io.savagedev.buckets.items.base;
  */
 
 import io.savagedev.buckets.api.IBucketItem;
-import io.savagedev.buckets.helpers.ItemHelper;
 import io.savagedev.buckets.items.ItemBigBucket;
 import io.savagedev.buckets.items.enums.DamageType;
 import io.savagedev.buckets.util.LogHelper;
+import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;

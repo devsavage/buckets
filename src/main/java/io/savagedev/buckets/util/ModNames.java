@@ -44,5 +44,8 @@ public class ModNames
         public static final String FIRED_CLAY_BUCKET_LAVA = "fired_clay_bucket_lava";
 
         public static final String ICY_BUCKET = "icy_bucket";
+
+        public static final String SLIME_BUCKET = "slime_bucket";
+        public static final String MAGMA_CREAM_BUCKET = "magma_cream_bucket";
     }
 }
