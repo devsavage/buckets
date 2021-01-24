@@ -134,7 +134,6 @@ public class BaseItemDamageableBucket extends BaseItem
                             case NORMAL:
                                 bucket.damageItem(1, playerIn, (playerEntity) -> {
                                     playerEntity.sendBreakAnimation(handIn);
-                                    playerEntity.setHeldItem(handIn, new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
                                 });
                             case TIMED:
                                 return ActionResult.resultPass(bucket);
