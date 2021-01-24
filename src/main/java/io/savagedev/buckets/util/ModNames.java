@@ -47,5 +47,8 @@ public class ModNames
 
         public static final String SLIME_BUCKET = "slime_bucket";
         public static final String MAGMA_CREAM_BUCKET = "magma_cream_bucket";
+        
+        public static final String EXPLOSIVE_BUCKET_EMPTY = "explosive_bucket_empty";
+        public static final String EXPLOSIVE_BUCKET_FULL = "explosive_bucket_full";
     }
 }

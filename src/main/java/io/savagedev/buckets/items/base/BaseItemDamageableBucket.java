@@ -24,6 +24,7 @@ package io.savagedev.buckets.items.base;
  */
 
 import io.savagedev.buckets.api.IBucketItem;
+import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.items.ItemBigBucket;
 import io.savagedev.buckets.items.enums.DamageType;
 import io.savagedev.buckets.util.LogHelper;
@@ -39,6 +40,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -119,18 +121,20 @@ public class BaseItemDamageableBucket extends BaseItem
                             CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerIn, getBlockPos, bucket);
                         }
 
-                        //TODO: Fix this to replace item in actual slot and not add to inventory
                         switch (this.damageType) {
                             case BIG:
                                 bucket.damageItem(100, playerIn, (playerEntity) -> {
-                                    playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
-                                    playerEntity.addItemStackToInventory(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
+                                    playerEntity.sendBreakAnimation(handIn);
                                 });
+
+                                if(bucket.isEmpty()) {
+                                    return ActionResult.resultPass(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
+                                }
                                 break;
                             case NORMAL:
                                 bucket.damageItem(1, playerIn, (playerEntity) -> {
-                                    playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
-                                    playerEntity.addItemStackToInventory(new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
+                                    playerEntity.sendBreakAnimation(handIn);
+                                    playerEntity.setHeldItem(handIn, new ItemStack(((IBucketItem)this).getEmptyBucketItem()));
                                 });
                             case TIMED:
                                 return ActionResult.resultPass(bucket);
