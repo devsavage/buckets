@@ -30,13 +30,17 @@ import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.item.UseAction;
+import net.minecraft.util.*;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -44,6 +48,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.function.Function;
 
 public class ItemExplosiveBucket extends BaseItem
@@ -54,9 +59,32 @@ public class ItemExplosiveBucket extends BaseItem
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        boolean isExplosiveBucket = playerIn.getHeldItem(handIn).getItem() == ModItems.EXPLOSIVE_BUCKET_FULL.get();
+        ItemStack bucket = playerIn.getHeldItem(handIn);
 
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+        playerIn.setActiveHand(handIn);
+
+        return ActionResult.resultConsume(bucket);
+    }
+
+    @Override
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+        if (entityLiving instanceof PlayerEntity) {
+            PlayerEntity playerIn = (PlayerEntity) entityLiving;
+            boolean isExplosiveBucket = playerIn.getHeldItem(Hand.MAIN_HAND).getItem() == ModItems.EXPLOSIVE_BUCKET_FULL.get();
+
+            if (!worldIn.isRemote && isExplosiveBucket) {
+                float launchVelocity = 0.4F;
+                LogHelper.debug(launchVelocity);
+                TNTEntity tntentity = new TNTEntity(worldIn, (double) playerIn.getPosition().getX(), (double) playerIn.getPosition().getY(), (double) playerIn.getPosition().getZ(), playerIn);
+                this.launch(tntentity, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, launchVelocity, 1.0F);
+                worldIn.addEntity(tntentity);
+                worldIn.playSound((PlayerEntity) null, tntentity.getPosX(), tntentity.getPosY(), tntentity.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+                stack.damageItem(8, playerIn, (playerEntity) -> {
+                    playerEntity.sendBreakAnimation(playerIn.getActiveHand());
+                });
+            }
+        }
     }
 
     @Override
@@ -83,6 +111,41 @@ public class ItemExplosiveBucket extends BaseItem
         }
 
         return ActionResultType.SUCCESS;
+    }
+
+
+    @Override
+    public int getUseDuration(ItemStack stack) {
+        return 72000;
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.BOW;
+    }
+
+    public void shoot(Entity entity, double x, double y, double z, float velocity, float inaccuracy) {
+        Random rand = new Random();
+        Vector3d vector3d = (new Vector3d(x, y, z)).normalize().add(rand.nextGaussian() * (double)0.0025F * (double)inaccuracy, rand.nextGaussian() * (double)0.0025F * (double)inaccuracy, rand.nextGaussian() * (double)0.0025F * (double)inaccuracy).scale((double)velocity);
+        entity.setMotion(vector3d);
+        float getHorizontal = MathHelper.sqrt(horizontalMag(vector3d));
+        entity.rotationYaw = (float)(MathHelper.atan2(vector3d.x, vector3d.z) * (double)(180F / (float)Math.PI));
+        entity.rotationPitch = (float)(MathHelper.atan2(vector3d.y, (double)getHorizontal) * (double)(180F / (float)Math.PI));
+        entity.prevRotationYaw = entity.rotationYaw;
+        entity.prevRotationPitch = entity.rotationPitch;
+    }
+
+    public void launch(Entity entity, float x, float y, float z, float velocity, float inaccuracy) {
+        float pX = -MathHelper.sin(y * ((float)Math.PI / 180F)) * MathHelper.cos(x * ((float)Math.PI / 180F));
+        float pY = -MathHelper.sin((x + z) * ((float)Math.PI / 180F));
+        float pZ = MathHelper.cos(y * ((float)Math.PI / 180F)) * MathHelper.cos(x * ((float)Math.PI / 180F));
+        this.shoot(entity, (double)pX, (double)pY, (double)pZ, velocity, inaccuracy);
+        Vector3d vector3d = entity.getMotion();
+        entity.setMotion(entity.getMotion().add(vector3d.x, entity.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
+    }
+
+    public static double horizontalMag(Vector3d vec) {
+        return vec.x * vec.x + vec.z * vec.z;
     }
 
     @Override
