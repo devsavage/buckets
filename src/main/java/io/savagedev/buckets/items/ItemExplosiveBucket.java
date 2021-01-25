@@ -28,6 +28,7 @@ import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.savagecore.item.ItemHelper;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -61,9 +62,12 @@ public class ItemExplosiveBucket extends BaseItem
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack bucket = playerIn.getHeldItem(handIn);
 
-        playerIn.setActiveHand(handIn);
+        if(bucket.getItem() == ModItems.EXPLOSIVE_BUCKET_FULL.get()) {
+            playerIn.setActiveHand(handIn);
+            return ActionResult.resultConsume(bucket);
+        }
 
-        return ActionResult.resultConsume(bucket);
+        return ActionResult.resultPass(bucket);
     }
 
     @Override
@@ -99,6 +103,7 @@ public class ItemExplosiveBucket extends BaseItem
                 fillBucket.setDamage(24);
 
                 Objects.requireNonNull(context.getPlayer()).setHeldItem(context.getHand(), fillBucket);
+                context.getWorld().setBlockState(context.getPos(), Blocks.AIR.getDefaultState());
             } else if(isExplosiveBucket) {
                 int bucketDmg = context.getItem().getDamage();
                 int newDmg = context.getItem().getDamage() - 8;
@@ -107,6 +112,10 @@ public class ItemExplosiveBucket extends BaseItem
                 }
 
                 context.getItem().setDamage(context.getItem().getDamage() - 8);
+
+                if(bucketDmg > 0) {
+                    context.getWorld().setBlockState(context.getPos(), Blocks.AIR.getDefaultState());
+                }
             }
         }
 

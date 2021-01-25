@@ -1,12 +1,16 @@
 {
   "type": "crafting_shaped",
   "pattern": [
+    "S S",
     "# #",
     " # "
   ],
   "key": {
     "#": {
       "tag": "minecraft:planks"
+    },
+    "S": {
+      "tag": "minecraft:stick"
     }
   },
   "result": {
