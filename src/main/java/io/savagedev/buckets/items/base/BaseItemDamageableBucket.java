@@ -191,14 +191,6 @@ public class BaseItemDamageableBucket extends BaseItem
         }
     }
 
-    public ItemStack getBucketStack(ItemStack bucketStack, PlayerEntity playerEntity) {
-        if(this instanceof IBucketItem) {
-            return !playerEntity.isCreative() ? new ItemStack(((IBucketItem)this).getEmptyBucketItem()) : bucketStack;
-        }
-
-        return ItemStack.EMPTY;
-    }
-
     public ItemStack fillBucket(ItemStack emptyBucket, PlayerEntity playerEntity, Item fullBucket) {
         if(playerEntity.isCreative()) {
             return emptyBucket;
@@ -219,7 +211,9 @@ public class BaseItemDamageableBucket extends BaseItem
     protected ItemStack getFilledBucket(Fluid fluid) {
         if(this instanceof IBucketItem) {
             if(fluid.getFluid() == Fluids.LAVA) {
-                return new ItemStack(((IBucketItem)this).getLavaBucketItem());
+                if(((IBucketItem)this).getLavaBucketItem() != null) {
+                    return new ItemStack(((IBucketItem)this).getLavaBucketItem());
+                }
             } else if(fluid.getFluid() == Fluids.WATER) {
                 return new ItemStack(((IBucketItem)this).getWaterBucketItem());
             }

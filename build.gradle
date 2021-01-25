@@ -17,7 +17,7 @@ repositories {
     mavenLocal()
 }
 
-version = '1.16.4-1.1.0.3'
+version = '1.16.4-1.1.0.4'
 group = 'io.savagedev.buckets'
 archivesBaseName = 'Buckets'
 

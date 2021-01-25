@@ -46,5 +46,8 @@
   "item.buckets.magma_cream_bucket": "Magma Slime Bucket",
 
   "item.buckets.explosive_bucket_empty": "Empty Explosive Bucket",
-  "item.buckets.explosive_bucket_full": "Explosive Bucket"
+  "item.buckets.explosive_bucket_full": "Explosive Bucket",
+
+  "item.buckets.infernal_bucket_empty": "Empty Infernal Bucket",
+  "item.buckets.infernal_bucket_full": "Infernal Bucket"
 }

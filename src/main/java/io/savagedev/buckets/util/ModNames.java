@@ -50,5 +50,8 @@ public class ModNames
         
         public static final String EXPLOSIVE_BUCKET_EMPTY = "explosive_bucket_empty";
         public static final String EXPLOSIVE_BUCKET_FULL = "explosive_bucket_full";
+
+        public static final String INFERNAL_BUCKET_EMPTY = "infernal_bucket_empty";
+        public static final String INFERNAL_BUCKET_FULL = "infernal_bucket_full";
     }
 }

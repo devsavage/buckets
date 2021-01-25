@@ -98,6 +98,9 @@ public class ModItems
     public static final RegistryObject<BaseItem> EXPLOSIVE_BUCKET_EMPTY = register(ModNames.Items.EXPLOSIVE_BUCKET_EMPTY, ItemExplosiveBucket::new);
     public static final RegistryObject<BaseItem> EXPLOSIVE_BUCKET_FULL = register(ModNames.Items.EXPLOSIVE_BUCKET_FULL, ItemExplosiveBucket::new);
 
+    public static final RegistryObject<BaseItem> INFERNAL_BUCKET_EMPTY = register(ModNames.Items.INFERNAL_BUCKET_EMPTY, () -> new ItemInfernalBucket(Fluids.EMPTY));
+    public static final RegistryObject<BaseItem> INFERNAL_BUCKET_FULL = register(ModNames.Items.INFERNAL_BUCKET_FULL, () -> new ItemInfernalBucket(Fluids.WATER));
+
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
