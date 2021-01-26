@@ -32,7 +32,6 @@ import io.savagedev.buckets.items.enums.ItemTimedBucketItem;
 import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.buckets.util.ModNames;
 import io.savagedev.buckets.util.ModReference;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -100,6 +99,8 @@ public class ModItems
 
     public static final RegistryObject<BaseItem> INFERNAL_BUCKET_EMPTY = register(ModNames.Items.INFERNAL_BUCKET_EMPTY, () -> new ItemInfernalBucket(Fluids.EMPTY));
     public static final RegistryObject<BaseItem> INFERNAL_BUCKET_FULL = register(ModNames.Items.INFERNAL_BUCKET_FULL, () -> new ItemInfernalBucket(Fluids.WATER));
+
+    public static final RegistryObject<BaseItem> SHIMMERING_BUCKET = register(ModNames.Items.SHIMMERING_BUCKET, ItemShimmeringBucket::new);
 
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {

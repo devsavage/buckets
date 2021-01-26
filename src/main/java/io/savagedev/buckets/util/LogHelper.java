@@ -23,7 +23,6 @@ package io.savagedev.buckets.util;
  * THE SOFTWARE.
  */
 
-import io.savagedev.buckets.util.ModReference;
 import org.apache.logging.log4j.*;
 import org.apache.logging.log4j.message.Message;
 

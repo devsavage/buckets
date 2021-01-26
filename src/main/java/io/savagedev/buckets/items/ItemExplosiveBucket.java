@@ -28,14 +28,12 @@ import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.savagecore.item.ItemHelper;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.UseAction;
@@ -50,7 +48,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.function.Function;
 
 public class ItemExplosiveBucket extends BaseItem
 {
@@ -79,14 +76,12 @@ public class ItemExplosiveBucket extends BaseItem
             if (!worldIn.isRemote && isExplosiveBucket) {
                 float launchVelocity = 0.4F;
                 LogHelper.debug(launchVelocity);
-                TNTEntity tntentity = new TNTEntity(worldIn, (double) playerIn.getPosition().getX(), (double) playerIn.getPosition().getY(), (double) playerIn.getPosition().getZ(), playerIn);
+                TNTEntity tntentity = new TNTEntity(worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ(), playerIn);
                 this.launch(tntentity, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, launchVelocity, 1.0F);
                 worldIn.addEntity(tntentity);
-                worldIn.playSound((PlayerEntity) null, tntentity.getPosX(), tntentity.getPosY(), tntentity.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                worldIn.playSound(null, tntentity.getPosX(), tntentity.getPosY(), tntentity.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
-                stack.damageItem(8, playerIn, (playerEntity) -> {
-                    playerEntity.sendBreakAnimation(playerIn.getActiveHand());
-                });
+                stack.damageItem(8, playerIn, (playerEntity) -> playerEntity.sendBreakAnimation(playerIn.getActiveHand()));
             }
         }
     }
@@ -135,11 +130,11 @@ public class ItemExplosiveBucket extends BaseItem
 
     public void shoot(Entity entity, double x, double y, double z, float velocity, float inaccuracy) {
         Random rand = new Random();
-        Vector3d vector3d = (new Vector3d(x, y, z)).normalize().add(rand.nextGaussian() * (double)0.0025F * (double)inaccuracy, rand.nextGaussian() * (double)0.0025F * (double)inaccuracy, rand.nextGaussian() * (double)0.0025F * (double)inaccuracy).scale((double)velocity);
+        Vector3d vector3d = (new Vector3d(x, y, z)).normalize().add(rand.nextGaussian() * (double)0.0025F * (double)inaccuracy, rand.nextGaussian() * (double)0.0025F * (double)inaccuracy, rand.nextGaussian() * (double)0.0025F * (double)inaccuracy).scale(velocity);
         entity.setMotion(vector3d);
         float getHorizontal = MathHelper.sqrt(horizontalMag(vector3d));
         entity.rotationYaw = (float)(MathHelper.atan2(vector3d.x, vector3d.z) * (double)(180F / (float)Math.PI));
-        entity.rotationPitch = (float)(MathHelper.atan2(vector3d.y, (double)getHorizontal) * (double)(180F / (float)Math.PI));
+        entity.rotationPitch = (float)(MathHelper.atan2(vector3d.y, getHorizontal) * (double)(180F / (float)Math.PI));
         entity.prevRotationYaw = entity.rotationYaw;
         entity.prevRotationPitch = entity.rotationPitch;
     }
@@ -148,7 +143,7 @@ public class ItemExplosiveBucket extends BaseItem
         float pX = -MathHelper.sin(y * ((float)Math.PI / 180F)) * MathHelper.cos(x * ((float)Math.PI / 180F));
         float pY = -MathHelper.sin((x + z) * ((float)Math.PI / 180F));
         float pZ = MathHelper.cos(y * ((float)Math.PI / 180F)) * MathHelper.cos(x * ((float)Math.PI / 180F));
-        this.shoot(entity, (double)pX, (double)pY, (double)pZ, velocity, inaccuracy);
+        this.shoot(entity, pX, pY, pZ, velocity, inaccuracy);
         Vector3d vector3d = entity.getMotion();
         entity.setMotion(entity.getMotion().add(vector3d.x, entity.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
     }

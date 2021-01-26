@@ -23,26 +23,15 @@ package io.savagedev.buckets.handler;
  * THE SOFTWARE.
  */
 
-import io.savagedev.buckets.api.IBucketItem;
 import io.savagedev.buckets.items.ItemTimedBucket;
-import io.savagedev.buckets.util.LogHelper;
-import io.savagedev.buckets.util.ModNames;
-import io.savagedev.buckets.util.NBTHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 
 public class TimedBucketTickHandler
 {
-    public int tickTimer = 0;
-
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if(event.phase == TickEvent.Phase.START && event.player.world.getGameTime() % 20 == 0) {
@@ -54,9 +43,7 @@ public class TimedBucketTickHandler
                 ItemStack stackInSlot = playerInv.getStackInSlot(i);
 
                 if(stackInSlot.getItem() instanceof ItemTimedBucket) {
-                    stackInSlot.damageItem(1, player, (playerEntity) -> {
-                        playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
-                    });
+                    stackInSlot.damageItem(1, player, (playerEntity) -> {});
                 }
             }
         }

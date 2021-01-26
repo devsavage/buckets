@@ -25,7 +25,6 @@ package io.savagedev.buckets.items;
 
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.base.BaseItem;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MagmaCubeEntity;

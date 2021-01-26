@@ -24,23 +24,18 @@ package io.savagedev.buckets.items.base;
  */
 
 import io.savagedev.buckets.api.IBucketItem;
-import io.savagedev.buckets.init.ModItems;
-import io.savagedev.buckets.items.ItemBigBucket;
 import io.savagedev.buckets.items.enums.DamageType;
-import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -50,14 +45,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.function.Function;
 
 public class BaseItemDamageableBucket extends BaseItem
@@ -186,7 +177,7 @@ public class BaseItemDamageableBucket extends BaseItem
 
                 return true;
             } else {
-                return blockRayTraceResult != null && this.attemptPlaceFluid(playerEntity, world, blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace()), (BlockRayTraceResult) null);
+                return blockRayTraceResult != null && this.attemptPlaceFluid(playerEntity, world, blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace()), null);
             }
         }
     }

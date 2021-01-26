@@ -25,18 +25,12 @@ package io.savagedev.buckets.items;
 
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.base.BaseItem;
-import io.savagedev.buckets.util.LogHelper;
-import net.java.games.input.Controller;
-import net.java.games.input.Keyboard;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
@@ -47,7 +41,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 public class ItemSlimeBucket extends BaseItem
 {

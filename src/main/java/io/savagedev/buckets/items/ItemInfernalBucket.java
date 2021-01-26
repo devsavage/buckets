@@ -24,18 +24,13 @@ package io.savagedev.buckets.items;
  */
 
 import io.savagedev.buckets.Buckets;
-import io.savagedev.buckets.api.IBucketItem;
 import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.items.base.BaseItem;
-import io.savagedev.buckets.items.base.BaseItemDamageableBucket;
-import io.savagedev.buckets.items.enums.DamageType;
-import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;
-import net.minecraft.block.ILiquidContainer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -45,21 +40,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.UseAction;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
-import sun.rmi.runtime.Log;
-
-import java.util.function.Function;
 
 public class ItemInfernalBucket extends BaseItem
 {
@@ -76,28 +65,28 @@ public class ItemInfernalBucket extends BaseItem
         RayTraceResult target = ItemHelper.rayTrace(worldIn, playerIn, this.containedFluid == Fluids.EMPTY ? RayTraceContext.FluidMode.SOURCE_ONLY : RayTraceContext.FluidMode.NONE);
         ActionResult<ItemStack> bucketUseResult = ForgeEventFactory.onBucketUse(playerIn, worldIn, bucket, target);
 
-        if(bucketUseResult != null) {
+        if (bucketUseResult != null) {
             return bucketUseResult;
         }
 
-        if(target.getType() == RayTraceResult.Type.MISS) {
+        if (target.getType() == RayTraceResult.Type.MISS) {
             playerIn.setActiveHand(handIn);
             return ActionResult.resultPass(bucket);
-        } else if(target.getType() != RayTraceResult.Type.BLOCK) {
+        } else if (target.getType() != RayTraceResult.Type.BLOCK) {
             return ActionResult.resultPass(bucket);
         } else {
             BlockRayTraceResult targetBlock = (BlockRayTraceResult) target;
             BlockPos targetBlockPos = targetBlock.getPos();
             Direction targetBlockDirection = targetBlock.getFace();
 
-            if(worldIn.isBlockModifiable(playerIn, targetBlockPos) && playerIn.canPlayerEdit(targetBlockPos, targetBlockDirection, bucket)) {
-                if(this.containedFluid == Fluids.EMPTY) {
+            if (worldIn.isBlockModifiable(playerIn, targetBlockPos) && playerIn.canPlayerEdit(targetBlockPos, targetBlockDirection, bucket)) {
+                if (this.containedFluid == Fluids.EMPTY) {
                     BlockState targetBlockState = worldIn.getBlockState(targetBlockPos);
 
-                    if(targetBlockState.getBlock() instanceof IBucketPickupHandler) {
-                        Fluid fluid = ((IBucketPickupHandler)targetBlockState.getBlock()).pickupFluid(worldIn, targetBlockPos, targetBlockState);
+                    if (targetBlockState.getBlock() instanceof IBucketPickupHandler) {
+                        Fluid fluid = ((IBucketPickupHandler) targetBlockState.getBlock()).pickupFluid(worldIn, targetBlockPos, targetBlockState);
 
-                        if(fluid != Fluids.EMPTY) {
+                        if (fluid != Fluids.EMPTY) {
                             SoundEvent soundevent = this.containedFluid.getAttributes().getEmptySound();
                             if (soundevent == null) {
                                 soundevent = SoundEvents.ITEM_BUCKET_FILL;
@@ -132,7 +121,7 @@ public class ItemInfernalBucket extends BaseItem
             world.setBlockState(targetPos, targetState, 11);
             ItemStack itemstack = context.getItem();
             if (playerentity instanceof ServerPlayerEntity) {
-                CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerentity, targetPos, itemstack);
+                CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) playerentity, targetPos, itemstack);
                 itemstack.damageItem(1, playerentity, (player) -> {
                     player.sendBreakAnimation(context.getHand());
                 });
@@ -146,9 +135,9 @@ public class ItemInfernalBucket extends BaseItem
 
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
-        if(entityLiving instanceof PlayerEntity) {
+        if (entityLiving instanceof PlayerEntity) {
             PlayerEntity playerIn = (PlayerEntity) entityLiving;
-            if(!worldIn.isRemote) {
+            if (!worldIn.isRemote) {
                 playerIn.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 150));
                 stack.damageItem(1, playerIn, (playerEntity) -> {
                     playerEntity.sendBreakAnimation(playerIn.getActiveHand());
@@ -160,14 +149,14 @@ public class ItemInfernalBucket extends BaseItem
     }
 
     public ItemStack fillBucket(ItemStack emptyBucket, PlayerEntity playerEntity, Item fullBucket) {
-        if(playerEntity.isCreative()) {
+        if (playerEntity.isCreative()) {
             return emptyBucket;
         } else {
             emptyBucket.shrink(1);
-            if(emptyBucket.isEmpty()) {
+            if (emptyBucket.isEmpty()) {
                 return new ItemStack(fullBucket);
             } else {
-                if(!playerEntity.inventory.addItemStackToInventory(new ItemStack(fullBucket))) {
+                if (!playerEntity.inventory.addItemStackToInventory(new ItemStack(fullBucket))) {
                     playerEntity.dropItem(new ItemStack(fullBucket), false);
                 }
 

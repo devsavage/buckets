@@ -1,8 +1,8 @@
 package io.savagedev.buckets.items;
 
 /*
- * ItemIcyBucket.java
- * Copyright (C) 2020 Savage - github.com/devsavage
+ * ItemShimmeringBucket.java
+ * Copyright (C) 2021 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,23 +28,25 @@ import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class ItemIcyBucket extends BaseItem
+public class ItemShimmeringBucket extends BaseItem
 {
-    public ItemIcyBucket() {
+    public ItemShimmeringBucket() {
         super(p -> p.maxStackSize(1).maxDamage(256).group(Buckets.modGroup));
     }
 
@@ -54,36 +56,42 @@ public class ItemIcyBucket extends BaseItem
         RayTraceResult target = ItemHelper.rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
         BlockRayTraceResult targetBlock = (BlockRayTraceResult) target;
         BlockPos targetBlockPos = targetBlock.getPos();
-        Direction targetBlockDirection = targetBlock.getFace();
+        BlockState targetBlockState = worldIn.getBlockState(targetBlock.getPos());
 
-        if(worldIn.isBlockModifiable(playerIn, targetBlockPos) && playerIn.canPlayerEdit(targetBlockPos, targetBlockDirection, bucket)) {
-            BlockState targetBlockState = worldIn.getBlockState(targetBlockPos);
+        if(targetBlockState.getBlock() instanceof IBucketPickupHandler) {
+            Fluid fluid = ((IBucketPickupHandler)targetBlockState.getBlock()).pickupFluid(worldIn, targetBlockPos, targetBlockState);
 
-            if(targetBlockState.getBlock() instanceof IBucketPickupHandler) {
-                Fluid fluid = ((IBucketPickupHandler)targetBlockState.getBlock()).pickupFluid(worldIn, targetBlockPos, targetBlockState);
-
-                if(fluid != Fluids.EMPTY) {
-                    if(fluid == Fluids.LAVA) {
-                        if(!playerIn.inventory.addItemStackToInventory(new ItemStack(Items.OBSIDIAN, 2))) {
-                            playerIn.dropItem(new ItemStack(Items.OBSIDIAN, 2), false);
-                        }
-                    } else if(fluid == Fluids.WATER) {
-                        if(!playerIn.inventory.addItemStackToInventory(new ItemStack(Items.ICE ))) {
-                            playerIn.dropItem(new ItemStack(Items.ICE ), false);
-                        }
-                    }
-
-                    bucket.damageItem(1, playerIn, (playerEntity) -> {
-                        playerEntity.sendBreakAnimation(Hand.MAIN_HAND);
-                    });
-
-                    return ActionResult.resultPass(bucket);
+            if(fluid != Fluids.EMPTY) {
+                SoundEvent soundevent = Fluids.LAVA.getAttributes().getEmptySound();
+                if (soundevent == null) {
+                    soundevent = SoundEvents.ITEM_BUCKET_FILL_LAVA;
                 }
-            }
 
-            return ActionResult.resultFail(bucket);
-        } else {
-            return ActionResult.resultFail(bucket);
+                playerIn.playSound(soundevent, 1.0F, 1.0F);
+
+                int minExp = 3;
+                int maxExp = 6;
+                int finalExp = minExp + worldIn.rand.nextInt(maxExp - minExp + 1);
+
+                if(!worldIn.isRemote) {
+                    int expSplit = ExperienceOrbEntity.getXPSplit(finalExp);
+                    finalExp -= expSplit;
+                    worldIn.addEntity(new ExperienceOrbEntity(worldIn, playerIn.getPosX() + 0.5D, playerIn.getPosY() + 0.5D, playerIn.getPosZ() + 0.5D, expSplit));
+                }
+
+                bucket.damageItem(1, playerIn, (playerEntity -> {
+                    playerEntity.sendBreakAnimation(handIn);
+                }));
+
+                return ActionResult.resultSuccess(bucket);
+            }
         }
+
+        return ActionResult.resultPass(bucket);
+    }
+
+    @Override
+    public Rarity getRarity(ItemStack stack) {
+        return Rarity.UNCOMMON;
     }
 }
