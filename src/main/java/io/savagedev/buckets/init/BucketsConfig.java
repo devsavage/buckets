@@ -1,8 +1,8 @@
-package io.savagedev.buckets.items.enums;
+package io.savagedev.buckets.init;
 
 /*
- * DamageType.java
- * Copyright (C) 2020-2022 Savage - github.com/devsavage
+ * BucketsConfig.java
+ * Copyright (C) 2021 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,26 @@ package io.savagedev.buckets.items.enums;
  * THE SOFTWARE.
  */
 
-public enum DamageType
+import net.minecraftforge.common.ForgeConfigSpec;
+
+public class BucketsConfig
 {
-    NORMAL,
-    BIG,
-    TIMED
+    public static final ForgeConfigSpec COMMON;
+
+    public static final ForgeConfigSpec.DoubleValue MAX_EXPLOSIVE_BUCKET_VELOCITY;
+
+    static {
+        final ForgeConfigSpec.Builder common = new ForgeConfigSpec.Builder();
+
+        common.comment("General configuration options.").push("General");
+
+        MAX_EXPLOSIVE_BUCKET_VELOCITY = common
+                .comment("Set the max launch velocity for the explosive bucket")
+                .translation("configGui.buckets.max_explosive_bucket_velocity")
+                .defineInRange("maxLaunchVelocity", 0.4, 0.2, 0.8);
+
+        common.pop();
+
+        COMMON = common.build();
+    }
 }

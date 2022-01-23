@@ -1,8 +1,8 @@
 package io.savagedev.buckets.items;
 
 /*
- * ItemIcyBucket.java
- * Copyright (C) 2020-2022 Savage - github.com/devsavage
+ * ItemShimmeringBucket.java
+ * Copyright (C) 2021 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,14 @@ import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BucketPickup;
@@ -43,9 +44,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class ItemIcyBucket extends BaseItem
+public class ItemShimmeringBucket extends BaseItem
 {
-    public ItemIcyBucket() {
+    public ItemShimmeringBucket() {
         super(p -> p.stacksTo(1).durability(256).tab(Buckets.modGroup));
     }
 
@@ -55,37 +56,43 @@ public class ItemIcyBucket extends BaseItem
         HitResult target = ItemHelper.rayTrace(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY);
         BlockHitResult targetBlock = (BlockHitResult) target;
         BlockPos targetBlockPos = targetBlock.getBlockPos();
-        Direction targetBlockDirection = targetBlock.getDirection();
+        BlockState targetBlockState = worldIn.getBlockState(targetBlock.getBlockPos());
 
-        if(worldIn.mayInteract(playerIn, targetBlockPos) && playerIn.mayUseItemAt(targetBlockPos, targetBlockDirection, bucket)) {
-            BlockState targetBlockState = worldIn.getBlockState(targetBlockPos);
+        if(targetBlockState.getBlock() instanceof BucketPickup) {
+            ItemStack itemStack = ((BucketPickup)targetBlockState.getBlock()).pickupBlock(worldIn, targetBlockPos, targetBlockState);
+            Fluid fluid = targetBlockState.getFluidState().getType();
 
-            if(targetBlockState.getBlock() instanceof BucketPickup targetFluidPickup) {
-                ItemStack itemStack = ((BucketPickup)targetBlockState.getBlock()).pickupBlock(worldIn, targetBlockPos, targetBlockState);
-                Fluid fluid = targetBlockState.getFluidState().getType();
-
-                if(!itemStack.isEmpty()) {
-                    if(fluid == Fluids.LAVA) {
-                        if(!playerIn.getInventory().add(new ItemStack(Items.OBSIDIAN, 2))) {
-                            playerIn.drop(new ItemStack(Items.OBSIDIAN, 2), false);
-                        }
-                    } else if(fluid == Fluids.WATER) {
-                        if(!playerIn.getInventory().add(new ItemStack(Items.ICE ))) {
-                            playerIn.drop(new ItemStack(Items.ICE ), false);
-                        }
-                    }
-
-                    bucket.hurtAndBreak(1, playerIn, (playerEntity) -> {
-                        playerEntity.broadcastBreakEvent(InteractionHand.MAIN_HAND);
-                    });
-
-                    return InteractionResultHolder.pass(bucket);
+            if(fluid != Fluids.EMPTY) {
+                SoundEvent soundevent = Fluids.LAVA.getAttributes().getEmptySound();
+                if (soundevent == null) {
+                    soundevent = SoundEvents.BUCKET_FILL_LAVA;
                 }
-            }
 
-            return InteractionResultHolder.fail(bucket);
-        } else {
-            return InteractionResultHolder.fail(bucket);
+                playerIn.playSound(soundevent, 1.0F, 1.0F);
+
+                int minExp = 3;
+                int maxExp = 6;
+                int finalExp = minExp + worldIn.random.nextInt(maxExp - minExp + 1);
+
+                if(!worldIn.isClientSide) {
+                    int expSplit = ExperienceOrb.getExperienceValue(finalExp);
+                    finalExp -= expSplit;
+                    worldIn.addFreshEntity(new ExperienceOrb(worldIn, playerIn.getX() + 0.5D, playerIn.getY() + 0.5D, playerIn.getZ() + 0.5D, expSplit));
+                }
+
+                bucket.hurtAndBreak(1, playerIn, (playerEntity -> {
+                    playerEntity.broadcastBreakEvent(handIn);
+                }));
+
+                return InteractionResultHolder.success(bucket);
+            }
         }
+
+        return InteractionResultHolder.pass(bucket);
+    }
+
+    @Override
+    public Rarity getRarity(ItemStack stack) {
+        return Rarity.UNCOMMON;
     }
 }

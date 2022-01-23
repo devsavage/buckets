@@ -39,5 +39,17 @@
 
   "item.buckets.unfired_clay_bucket": "Unfired Clay Bucket",
 
-  "item.buckets.icy_bucket": "Icy Bucket"
+  "item.buckets.icy_bucket": "Icy Bucket",
+
+  "item.buckets.slime_bucket": "Slime Bucket",
+
+  "item.buckets.magma_cream_bucket": "Magma Slime Bucket",
+
+  "item.buckets.explosive_bucket_empty": "Empty Explosive Bucket",
+  "item.buckets.explosive_bucket_full": "Explosive Bucket",
+
+  "item.buckets.infernal_bucket_empty": "Empty Infernal Bucket",
+  "item.buckets.infernal_bucket_full": "Infernal Bucket",
+
+  "item.buckets.shimmering_bucket": "Shimmering Bucket"
 }

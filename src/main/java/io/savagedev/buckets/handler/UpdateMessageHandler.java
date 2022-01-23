@@ -1,8 +1,8 @@
-package io.savagedev.buckets.items.enums;
+package io.savagedev.buckets.handler;
 
 /*
- * DamageType.java
- * Copyright (C) 2020-2022 Savage - github.com/devsavage
+ * UpdateMessageHandler.java
+ * Copyright (C) 2021 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,22 @@ package io.savagedev.buckets.items.enums;
  * THE SOFTWARE.
  */
 
-public enum DamageType
+import io.savagedev.buckets.util.ModReference;
+import io.savagedev.savagecore.util.updater.Updater;
+import io.savagedev.savagecore.util.updater.UpdaterUtils;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+public class UpdateMessageHandler
 {
-    NORMAL,
-    BIG,
-    TIMED
+    public Updater updater;
+
+    public UpdateMessageHandler(Updater instance) {
+        this.updater = instance;
+    }
+
+    @SubscribeEvent
+    public void playerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        UpdaterUtils.sendUpdateMessageIfOutdated(ModReference.MOD_NAME, event, this.updater);
+    }
 }

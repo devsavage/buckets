@@ -2,7 +2,7 @@ package io.savagedev.buckets.items.enums;
 
 /*
  * ItemBigBucketItem.java
- * Copyright (C) 2020 Savage - github.com/devsavage
+ * Copyright (C) 2020-2022 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,14 +24,15 @@ package io.savagedev.buckets.items.enums;
  */
 
 import io.savagedev.buckets.util.ModNames;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 
-public enum ItemBigBucketItem implements IStringSerializable
+public enum ItemBigBucketItem implements StringRepresentable
 {
     OBSIDIAN_BUCKET_EMPTY(ModNames.Items.OBSIDIAN_BUCKET, Fluids.EMPTY, 0),
     OBSIDIAN_BUCKET_LAVA(ModNames.Items.OBSIDIAN_BUCKET, Fluids.LAVA,  300),
@@ -53,7 +54,7 @@ public enum ItemBigBucketItem implements IStringSerializable
     DIAMOND_BUCKET_LAVA(ModNames.Items.DIAMOND_BUCKET, Fluids.LAVA,  600),
     DIAMOND_BUCKET_WATER(ModNames.Items.DIAMOND_BUCKET, Fluids.WATER,  600);
 
-    private static final ItemBigBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemBigBucketItem::getName)).toArray((bucketName) -> {
+    private static final ItemBigBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemBigBucketItem::toString)).toArray((bucketName) -> {
         return new ItemBigBucketItem[bucketName];
     });
 
@@ -83,12 +84,17 @@ public enum ItemBigBucketItem implements IStringSerializable
         return this.bucketName + "_water";
     }
 
-    @Override
-    public String getName() {
-        return this.bucketName + "_" + this.fluidDef.getRegistryName().getPath();
-    }
-
     public int getBucketDamage() {
         return bucketMaxDamage;
+    }
+
+    @Override
+    public String toString() {
+        return this.bucketName + "_" + Objects.requireNonNull(this.fluidDef.getRegistryName()).getPath();
+    }
+
+    @Override
+    public String getSerializedName() {
+        return this.bucketName + "_" + Objects.requireNonNull(this.fluidDef.getRegistryName()).getPath();
     }
 }

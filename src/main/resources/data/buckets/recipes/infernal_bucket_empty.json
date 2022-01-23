@@ -1,0 +1,23 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "NBN",
+    " N "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:diamond"
+    },
+    "N": {
+      "item": "minecraft:netherrack"
+    },
+    "B": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "buckets:infernal_bucket_empty",
+    "count": 1
+  }
+}

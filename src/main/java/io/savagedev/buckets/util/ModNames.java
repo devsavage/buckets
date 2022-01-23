@@ -2,7 +2,7 @@ package io.savagedev.buckets.util;
 
 /*
  * ModNames.java
- * Copyright (C) 2020 Savage - github.com/devsavage
+ * Copyright (C) 2020-2022 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,5 +44,16 @@ public class ModNames
         public static final String FIRED_CLAY_BUCKET_LAVA = "fired_clay_bucket_lava";
 
         public static final String ICY_BUCKET = "icy_bucket";
+
+        public static final String SLIME_BUCKET = "slime_bucket";
+        public static final String MAGMA_CREAM_BUCKET = "magma_cream_bucket";
+        
+        public static final String EXPLOSIVE_BUCKET_EMPTY = "explosive_bucket_empty";
+        public static final String EXPLOSIVE_BUCKET_FULL = "explosive_bucket_full";
+
+        public static final String INFERNAL_BUCKET_EMPTY = "infernal_bucket_empty";
+        public static final String INFERNAL_BUCKET_FULL = "infernal_bucket_full";
+
+        public static final String SHIMMERING_BUCKET = "shimmering_bucket";
     }
 }

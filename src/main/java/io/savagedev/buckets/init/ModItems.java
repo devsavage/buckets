@@ -2,7 +2,7 @@ package io.savagedev.buckets.init;
 
 /*
  * ModItems.java
- * Copyright (C) 2020 Savage - github.com/devsavage
+ * Copyright (C) 2020-2022 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,23 +25,19 @@ package io.savagedev.buckets.init;
 
 import com.google.gson.JsonObject;
 import io.savagedev.buckets.Buckets;
-import io.savagedev.buckets.items.ItemFiredClayBucket;
-import io.savagedev.buckets.items.ItemIcyBucket;
-import io.savagedev.buckets.items.ItemTimedBucket;
+import io.savagedev.buckets.items.*;
 import io.savagedev.buckets.items.base.BaseItem;
-import io.savagedev.buckets.items.ItemBigBucket;
 import io.savagedev.buckets.items.enums.ItemBigBucketItem;
 import io.savagedev.buckets.items.enums.ItemTimedBucketItem;
 import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.buckets.util.ModNames;
 import io.savagedev.buckets.util.ModReference;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -87,13 +83,24 @@ public class ModItems
     public static final RegistryObject<BaseItem> SMOOTHSTONE_BUCKET_WATER = registerTimedBucket(ItemTimedBucketItem.SMOOTHSTONE_BUCKET_WATER);
     public static final RegistryObject<BaseItem> SMOOTHSTONE_BUCKET_LAVA = registerTimedBucket(ItemTimedBucketItem.SMOOTHSTONE_BUCKET_LAVA);
 
-    public static final RegistryObject<BaseItem> UNFIRED_CLAY_BUCKET = register(ModNames.Items.UNFIRED_CLAY_BUCKET, () -> new BaseItem(p -> p.group(Buckets.modGroup).maxStackSize(1)));
+    public static final RegistryObject<BaseItem> UNFIRED_CLAY_BUCKET = register(ModNames.Items.UNFIRED_CLAY_BUCKET, () -> new BaseItem(p -> p.tab(Buckets.modGroup).stacksTo(1)));
 
     public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET = register(ModNames.Items.FIRED_CLAY_BUCKET, () -> new ItemFiredClayBucket(Fluids.EMPTY));
     public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET_WATER = register(ModNames.Items.FIRED_CLAY_BUCKET_WATER, () -> new ItemFiredClayBucket(Fluids.WATER));
     public static final RegistryObject<BaseItem> FIRED_CLAY_BUCKET_LAVA = register(ModNames.Items.FIRED_CLAY_BUCKET_LAVA, () -> new ItemFiredClayBucket(Fluids.LAVA));
 
     public static final RegistryObject<BaseItem> ICY_BUCKET = register(ModNames.Items.ICY_BUCKET, ItemIcyBucket::new);
+
+    public static final RegistryObject<BaseItem> SLIME_BUCKET = register(ModNames.Items.SLIME_BUCKET, ItemSlimeBucket::new);
+    public static final RegistryObject<BaseItem> MAGMA_CREAM_BUCKET = register(ModNames.Items.MAGMA_CREAM_BUCKET, ItemMagmaCreamBucket::new);
+
+    public static final RegistryObject<BaseItem> EXPLOSIVE_BUCKET_EMPTY = register(ModNames.Items.EXPLOSIVE_BUCKET_EMPTY, ItemExplosiveBucket::new);
+    public static final RegistryObject<BaseItem> EXPLOSIVE_BUCKET_FULL = register(ModNames.Items.EXPLOSIVE_BUCKET_FULL, ItemExplosiveBucket::new);
+
+    public static final RegistryObject<BaseItem> INFERNAL_BUCKET_EMPTY = register(ModNames.Items.INFERNAL_BUCKET_EMPTY, () -> new ItemInfernalBucket(Fluids.EMPTY));
+    public static final RegistryObject<BaseItem> INFERNAL_BUCKET_FULL = register(ModNames.Items.INFERNAL_BUCKET_FULL, () -> new ItemInfernalBucket(Fluids.WATER));
+
+    public static final RegistryObject<BaseItem> SHIMMERING_BUCKET = register(ModNames.Items.SHIMMERING_BUCKET, ItemShimmeringBucket::new);
 
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {
@@ -107,7 +114,7 @@ public class ModItems
         generateModelFile(bucketItem.getWaterBucket());
         generateModelFile(bucketItem.getLavaBucket());
 
-        return register(bucketItem.getName(), () -> new ItemBigBucket(bucketItem));
+        return register(bucketItem.toString(), () -> new ItemBigBucket(bucketItem));
     }
 
     private static <T extends Item> RegistryObject<T> registerTimedBucket(ItemTimedBucketItem bucketItem) {
@@ -115,7 +122,7 @@ public class ModItems
         generateModelFile(bucketItem.getWaterBucket());
         generateModelFile(bucketItem.getLavaBucket());
 
-        return register(bucketItem.getName(), () -> new ItemTimedBucket(bucketItem));
+        return register(bucketItem.toString(), () -> new ItemTimedBucket(bucketItem));
     }
 
     private static <T extends Item> RegistryObject<T> register(String name, Supplier<? extends Item> item) {

@@ -2,7 +2,7 @@ package io.savagedev.buckets.items.enums;
 
 /*
  * ItemTimedBucketItem.java
- * Copyright (C) 2020 Savage - github.com/devsavage
+ * Copyright (C) 2020-2022 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,14 +24,14 @@ package io.savagedev.buckets.items.enums;
  */
 
 import io.savagedev.buckets.util.ModNames;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-public enum ItemTimedBucketItem implements IStringSerializable
+public enum ItemTimedBucketItem implements StringRepresentable
 {
     WOODEN_BUCKET_EMPTY(ModNames.Items.WOODEN_BUCKET, Fluids.EMPTY, 0),
     WOODEN_BUCKET_WATER(ModNames.Items.WOODEN_BUCKET, Fluids.WATER, 20),
@@ -45,7 +45,7 @@ public enum ItemTimedBucketItem implements IStringSerializable
     SMOOTHSTONE_BUCKET_WATER(ModNames.Items.SMOOTHSTONE_BUCKET, Fluids.WATER, 300),
     SMOOTHSTONE_BUCKET_LAVA(ModNames.Items.SMOOTHSTONE_BUCKET, Fluids.LAVA, 300);
 
-    private static final ItemTimedBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemTimedBucketItem::getName)).toArray((bucketName) -> {
+    private static final ItemTimedBucketItem[] VALUES = Arrays.stream(values()).sorted(Comparator.comparing(ItemTimedBucketItem::toString)).toArray((bucketName) -> {
         return new ItemTimedBucketItem[bucketName];
     });
 
@@ -75,12 +75,17 @@ public enum ItemTimedBucketItem implements IStringSerializable
         return this.bucketName + "_water";
     }
 
+    public int getBucketMaxTime() {
+        return bucketMaxTime;
+    }
+
     @Override
-    public String getName() {
+    public String toString() {
         return this.bucketName + "_" + this.fluidDef.getRegistryName().getPath();
     }
 
-    public int getBucketMaxTime() {
-        return bucketMaxTime;
+    @Override
+    public String getSerializedName() {
+        return this.bucketName + "_" + this.fluidDef.getRegistryName().getPath();
     }
 }

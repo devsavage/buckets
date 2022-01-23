@@ -2,7 +2,7 @@ package io.savagedev.buckets.items;
 
 /*
  * ItemBigBucket.java
- * Copyright (C) 2020 Savage - github.com/devsavage
+ * Copyright (C) 2020-2022 Savage - github.com/devsavage
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,13 +29,13 @@ import io.savagedev.buckets.items.base.BaseItemDamageableBucket;
 import io.savagedev.buckets.items.enums.DamageType;
 import io.savagedev.buckets.items.enums.ItemBigBucketItem;
 import io.savagedev.buckets.util.ModReference;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -47,31 +47,31 @@ public class ItemBigBucket extends BaseItemDamageableBucket implements IBucketIt
     public final ItemBigBucketItem bucketItem;
 
     public ItemBigBucket(ItemBigBucketItem bucketItem) {
-        super(p -> (p.group(Buckets.modGroup).maxStackSize(1).maxDamage(bucketItem.getBucketDamage())), bucketItem.getFluidType(), DamageType.BIG);
+        super(p -> (p.tab(Buckets.modGroup).stacksTo(1).durability(bucketItem.getBucketDamage())), bucketItem.getFluidType(), DamageType.BIG);
         this.bucketItem = bucketItem;
     }
 
     @Override
     public Item getEmptyBucketItem() {
-        return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, this.bucketItem.getEmptyBucket()))).getItem();
+        return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, this.bucketItem.getEmptyBucket()))).asItem();
     }
 
     @Override
     public Item getLavaBucketItem() {
-        return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, this.bucketItem.getLavaBucket()))).getItem();
+        return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, this.bucketItem.getLavaBucket()))).asItem();
     }
 
     @Override
     public Item getWaterBucketItem() {
-        return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, this.bucketItem.getWaterBucket()))).getItem();
+        return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, this.bucketItem.getWaterBucket()))).asItem();
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if(stack.getMaxDamage() == 0) {
-            tooltip.add(new StringTextComponent("Uses: 1"));
+            tooltip.add(new TextComponent("Uses: 1"));
         } else {
-            tooltip.add(new StringTextComponent("Uses: " + (this.getMaxDamage(stack) - this.getDamage(stack)) / 100));
+            tooltip.add(new TextComponent("Uses: " + (this.getMaxDamage(stack) - this.getDamage(stack)) / 100));
         }
     }
 }
