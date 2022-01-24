@@ -25,6 +25,7 @@ package io.savagedev.buckets.items;
 
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.base.BaseItem;
+import io.savagedev.buckets.util.LogHelper;
 import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -58,25 +59,24 @@ public class ItemShimmeringBucket extends BaseItem
         BlockPos targetBlockPos = targetBlock.getBlockPos();
         BlockState targetBlockState = worldIn.getBlockState(targetBlock.getBlockPos());
 
-        if(targetBlockState.getBlock() instanceof BucketPickup) {
-            ItemStack itemStack = ((BucketPickup)targetBlockState.getBlock()).pickupBlock(worldIn, targetBlockPos, targetBlockState);
+        if(targetBlockState.getBlock() instanceof BucketPickup targetFluidPickup) {
+            ItemStack fluidStack = ((BucketPickup)targetBlockState.getBlock()).pickupBlock(worldIn, targetBlockPos, targetBlockState);
             Fluid fluid = targetBlockState.getFluidState().getType();
 
             if(fluid != Fluids.EMPTY) {
-                SoundEvent soundevent = Fluids.LAVA.getAttributes().getEmptySound();
-                if (soundevent == null) {
-                    soundevent = SoundEvents.BUCKET_FILL_LAVA;
-                }
-
-                playerIn.playSound(soundevent, 1.0F, 1.0F);
+                targetFluidPickup.getPickupSound().ifPresent((event) -> {
+                    playerIn.playSound(event, 1.0F, 1.0F);
+                });
 
                 int minExp = 3;
                 int maxExp = 6;
                 int finalExp = minExp + worldIn.random.nextInt(maxExp - minExp + 1);
 
                 if(!worldIn.isClientSide) {
+                    LogHelper.info("exp");
                     int expSplit = ExperienceOrb.getExperienceValue(finalExp);
                     finalExp -= expSplit;
+
                     worldIn.addFreshEntity(new ExperienceOrb(worldIn, playerIn.getX() + 0.5D, playerIn.getY() + 0.5D, playerIn.getZ() + 0.5D, expSplit));
                 }
 

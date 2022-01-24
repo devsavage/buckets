@@ -72,7 +72,7 @@ public class BaseItemDamageableBucket extends BaseItem
     @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack bucket = playerIn.getItemInHand(handIn);
-        BlockHitResult target = getPlayerPOVHitResult(worldIn, playerIn, this.containedFluid == Fluids.EMPTY ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
+        HitResult target = getPlayerPOVHitResult(worldIn, playerIn, this.containedFluid == Fluids.EMPTY ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
         InteractionResultHolder<ItemStack> bucketUseResult = ForgeEventFactory.onBucketUse(playerIn, worldIn, bucket, target);
 
         if(bucketUseResult != null) {
@@ -95,13 +95,14 @@ public class BaseItemDamageableBucket extends BaseItem
                 if(this.containedFluid == Fluids.EMPTY) {
                     if(targetBlockState.getBlock() instanceof BucketPickup targetFluidPickup) {
                         ItemStack fluidBucketStack = targetFluidPickup.pickupBlock(worldIn, targetBlockPos, targetBlockState);
+                        Fluid fluid = targetBlockState.getFluidState().getType();
 
-                        if(!fluidBucketStack.isEmpty()) {
+                        if(fluid != Fluids.EMPTY) {
                             targetFluidPickup.getPickupSound().ifPresent((event) -> {
                                 playerIn.playSound(event, 1.0F, 1.0F);
                             });
 
-                            ItemStack filledBucket = this.fillBucket(bucket, playerIn, getFilledBucket(this.containedFluid).getItem());
+                            ItemStack filledBucket = this.fillBucket(bucket, playerIn, getFilledBucket(fluid).getItem());
 
                             return InteractionResultHolder.success(filledBucket);
                         }

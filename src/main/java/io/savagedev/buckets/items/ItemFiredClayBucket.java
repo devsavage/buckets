@@ -80,13 +80,14 @@ public class ItemFiredClayBucket extends BaseItemDamageableBucket implements IBu
                 if(this.containedFluid == Fluids.EMPTY) {
                     if(targetBlockState.getBlock() instanceof BucketPickup targetFluidPickup) {
                         ItemStack fluidBucketStack = targetFluidPickup.pickupBlock(worldIn, targetBlockPos, targetBlockState);
+                        Fluid fluid = targetBlockState.getFluidState().getType();
 
-                        if(!fluidBucketStack.isEmpty()) {
+                        if(fluid != Fluids.EMPTY) {
                             targetFluidPickup.getPickupSound().ifPresent((event) -> {
                                 playerIn.playSound(event, 1.0F, 1.0F);
                             });
 
-                            ItemStack filledBucket = this.fillBucket(bucket, playerIn, getFilledBucket(this.containedFluid).getItem());
+                            ItemStack filledBucket = this.fillBucket(bucket, playerIn, getFilledBucket(fluid).getItem());
 
                             return InteractionResultHolder.success(filledBucket);
                         }

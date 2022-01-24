@@ -64,14 +64,14 @@ public class ItemIcyBucket extends BaseItem
                 ItemStack itemStack = ((BucketPickup)targetBlockState.getBlock()).pickupBlock(worldIn, targetBlockPos, targetBlockState);
                 Fluid fluid = targetBlockState.getFluidState().getType();
 
-                if(!itemStack.isEmpty()) {
+                if(fluid != Fluids.EMPTY) {
                     if(fluid == Fluids.LAVA) {
                         if(!playerIn.getInventory().add(new ItemStack(Items.OBSIDIAN, 2))) {
                             playerIn.drop(new ItemStack(Items.OBSIDIAN, 2), false);
                         }
                     } else if(fluid == Fluids.WATER) {
-                        if(!playerIn.getInventory().add(new ItemStack(Items.ICE ))) {
-                            playerIn.drop(new ItemStack(Items.ICE ), false);
+                        if(!playerIn.getInventory().add(new ItemStack(Items.ICE))) {
+                            playerIn.drop(new ItemStack(Items.ICE), false);
                         }
                     }
 
