@@ -24,6 +24,7 @@ package io.savagedev.buckets.handler;
  */
 
 import io.savagedev.buckets.items.ItemTimedBucket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -42,8 +43,13 @@ public class TimedBucketTickHandler
             for(int i = 0; i < invSize; i++) {
                 ItemStack stackInSlot = playerInv.getItem(i);
 
+                // Removes the visual update of the bucket
                 if(stackInSlot.getItem() instanceof ItemTimedBucket) {
-                    stackInSlot.hurtAndBreak(1, player, (playerEntity) -> {});
+                   stackInSlot.hurt(1, event.player.getRandom(), event.player instanceof ServerPlayer ? (ServerPlayer) event.player : null);
+
+                   if(stackInSlot.getDamageValue() >= stackInSlot.getMaxDamage()) {
+                       stackInSlot.shrink(1);
+                   }
                 }
             }
         }

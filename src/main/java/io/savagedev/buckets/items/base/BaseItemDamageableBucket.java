@@ -72,6 +72,15 @@ public class BaseItemDamageableBucket extends BaseItem
     @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack bucket = playerIn.getItemInHand(handIn);
+
+        if(playerIn.isShiftKeyDown()) {
+            if(this.containedFluid != Fluids.EMPTY) {
+                ItemStack emptyBucket = this.fillBucket(bucket, playerIn, new ItemStack(((IBucketItem)this).getEmptyBucketItem()).getItem());
+
+                return InteractionResultHolder.success(emptyBucket);
+            }
+        }
+
         HitResult target = getPlayerPOVHitResult(worldIn, playerIn, this.containedFluid == Fluids.EMPTY ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
         InteractionResultHolder<ItemStack> bucketUseResult = ForgeEventFactory.onBucketUse(playerIn, worldIn, bucket, target);
 
