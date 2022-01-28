@@ -29,7 +29,9 @@ import io.savagedev.buckets.init.BucketsConfig;
 import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.buckets.util.LogHelper;
+import io.savagedev.buckets.util.ModTooltips;
 import io.savagedev.savagecore.item.ItemHelper;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
@@ -48,6 +50,8 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TntBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -81,7 +85,7 @@ public class ItemExplosiveBucket extends BaseItem
 
             if (!worldIn.isClientSide && isExplosiveBucket) {
                 float launchVelocity = this.calculateVelocity();
-                PrimedTnt tntentity = new PrimedTnt(worldIn, playerIn.getOnPos().getX(), playerIn.getOnPos().getY(), playerIn.getOnPos().getZ(), playerIn);
+                PrimedTnt tntentity = new PrimedTnt(worldIn, playerIn.getOnPos().getX(), playerIn.getEyeY(), playerIn.getOnPos().getZ(), playerIn);
                 this.launch(tntentity, playerIn.getXRot(), playerIn.getYRot(), 0.0F, launchVelocity, 1.0F);
                 worldIn.addFreshEntity(tntentity);
                 worldIn.playSound(null, tntentity.getX(), tntentity.getY(), tntentity.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -98,6 +102,8 @@ public class ItemExplosiveBucket extends BaseItem
         boolean isTargetTnt = context.getLevel().getBlockState(context.getClickedPos()).getBlock() == Blocks.TNT;
 
         if(isTargetTnt) {
+            TntBlock targetTnt = (TntBlock) context.getLevel().getBlockState(context.getClickedPos()).getBlock();
+
             if(isEmptyBucket) {
                 ItemStack fillBucket = new ItemStack(ModItems.EXPLOSIVE_BUCKET_FULL.get());
                 fillBucket.setDamageValue(24);
@@ -105,6 +111,12 @@ public class ItemExplosiveBucket extends BaseItem
                 Objects.requireNonNull(context.getPlayer()).setItemInHand(context.getHand(), fillBucket);
                 context.getLevel().setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
             } else if(isExplosiveBucket) {
+                if(context.getPlayer().isShiftKeyDown()) {
+                    BlockState targetTntState = context.getLevel().getBlockState(context.getClickedPos());
+                    targetTnt.catchFire(targetTntState, context.getLevel(), context.getClickedPos(), context.getClickedFace(), context.getPlayer());
+                    context.getLevel().setBlock(context.getClickedPos(), Blocks.AIR.defaultBlockState(), 11);
+                }
+
                 int bucketDmg = context.getItemInHand().getDamageValue();
                 int newDmg = context.getItemInHand().getDamageValue() - 8;
                 if(bucketDmg >= context.getItemInHand().getMaxDamage() || newDmg > context.getItemInHand().getMaxDamage()) {
@@ -159,6 +171,7 @@ public class ItemExplosiveBucket extends BaseItem
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        if(Screen.hasShiftDown() && stack.getItem() == ModItems.EXPLOSIVE_BUCKET_FULL.get()) tooltip.add(new TextComponent(ModTooltips.TNT_BUCKET));
         if(stack.getItem() == ModItems.EXPLOSIVE_BUCKET_FULL.get()) {
             if(stack.getDamageValue() == 0) {
                 tooltip.add(new TextComponent("Uses: 4"));

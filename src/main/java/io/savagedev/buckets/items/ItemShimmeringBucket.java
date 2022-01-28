@@ -26,8 +26,12 @@ package io.savagedev.buckets.items;
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.base.BaseItem;
 import io.savagedev.buckets.util.LogHelper;
+import io.savagedev.buckets.util.ModTooltips;
 import io.savagedev.savagecore.item.ItemHelper;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -36,6 +40,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BucketPickup;
@@ -44,6 +49,9 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemShimmeringBucket extends BaseItem
 {
@@ -63,7 +71,7 @@ public class ItemShimmeringBucket extends BaseItem
             ItemStack fluidStack = ((BucketPickup)targetBlockState.getBlock()).pickupBlock(worldIn, targetBlockPos, targetBlockState);
             Fluid fluid = targetBlockState.getFluidState().getType();
 
-            if(fluid != Fluids.EMPTY) {
+            if(fluid == Fluids.LAVA) {
                 targetFluidPickup.getPickupSound().ifPresent((event) -> {
                     playerIn.playSound(event, 1.0F, 1.0F);
                 });
@@ -73,7 +81,6 @@ public class ItemShimmeringBucket extends BaseItem
                 int finalExp = minExp + worldIn.random.nextInt(maxExp - minExp + 1);
 
                 if(!worldIn.isClientSide) {
-                    LogHelper.info("exp");
                     int expSplit = ExperienceOrb.getExperienceValue(finalExp);
                     finalExp -= expSplit;
 
@@ -94,5 +101,10 @@ public class ItemShimmeringBucket extends BaseItem
     @Override
     public Rarity getRarity(ItemStack stack) {
         return Rarity.UNCOMMON;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        if(Screen.hasShiftDown()) tooltip.add(new TextComponent(ModTooltips.SHIMMERING));
     }
 }

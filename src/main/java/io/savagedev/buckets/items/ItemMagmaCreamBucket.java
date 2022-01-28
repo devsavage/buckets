@@ -25,7 +25,9 @@ package io.savagedev.buckets.items;
 
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.items.base.BaseItem;
+import io.savagedev.buckets.util.ModTooltips;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -74,6 +76,6 @@ public class ItemMagmaCreamBucket extends BaseItem
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TextComponent(ChatFormatting.ITALIC + "Milk a magma cube every so often."));
+        if(Screen.hasShiftDown()) tooltip.add(new TextComponent(ModTooltips.MAGMA));
     }
 }

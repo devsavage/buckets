@@ -26,10 +26,14 @@ package io.savagedev.buckets.items;
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.items.base.BaseItem;
+import io.savagedev.buckets.util.ModTooltips;
 import io.savagedev.savagecore.item.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -43,6 +47,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
@@ -56,6 +61,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.ForgeEventFactory;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemInfernalBucket extends BaseItem
 {
@@ -181,5 +189,10 @@ public class ItemInfernalBucket extends BaseItem
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.DRINK;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> tooltip, TooltipFlag p_41424_) {
+        if(Screen.hasShiftDown()) tooltip.add(new TextComponent(ModTooltips.INFERNAL));
     }
 }

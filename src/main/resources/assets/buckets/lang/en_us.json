@@ -51,5 +51,7 @@
   "item.buckets.infernal_bucket_empty": "Empty Infernal Bucket",
   "item.buckets.infernal_bucket_full": "Infernal Bucket",
 
-  "item.buckets.shimmering_bucket": "Shimmering Bucket"
+  "item.buckets.shimmering_bucket": "Shimmering Bucket",
+
+  "item.buckets.black_hole_bucket": "Black Hole Bucket"
 }

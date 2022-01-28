@@ -25,10 +25,16 @@ package io.savagedev.buckets.items;
 
 import io.savagedev.buckets.Buckets;
 import io.savagedev.buckets.api.IBucketItem;
+import io.savagedev.buckets.init.ModItems;
 import io.savagedev.buckets.items.base.BaseItemDamageableBucket;
 import io.savagedev.buckets.items.enums.DamageType;
 import io.savagedev.buckets.items.enums.ItemTimedBucketItem;
 import io.savagedev.buckets.util.ModReference;
+import io.savagedev.buckets.util.ModTooltips;
+import net.java.games.input.Keyboard;
+import net.minecraft.client.KeyboardHandler;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -68,6 +74,18 @@ public class ItemTimedBucket extends BaseItemDamageableBucket implements IBucket
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TextComponent("Seconds Remaining: " + (this.bucketItem.getBucketMaxTime() - this.getDamage(stack))));
+        int maxTime = this.bucketItem.getBucketMaxTime();
+
+        if(Screen.hasShiftDown()) {
+            if(stack.getItem() == ModItems.COBBLESTONE_BUCKET_WATER.get() || stack.getItem() == ModItems.COBBLESTONE_BUCKET_LAVA.get() || stack.getItem() == ModItems.COBBLESTONE_BUCKET_EMPTY.get()) {
+                tooltip.add(new TextComponent(String.format(ModTooltips.COBBLE_TIMED, "90", "60")));
+            } else if(stack.getItem() == ModItems.SMOOTHSTONE_BUCKET_EMPTY.get() || stack.getItem() == ModItems.SMOOTHSTONE_BUCKET_WATER.get() || stack.getItem() == ModItems.SMOOTHSTONE_BUCKET_LAVA.get()) {
+                tooltip.add(new TextComponent(String.format(ModTooltips.SMOOTH_TIMED, "300")));
+            } else {
+                tooltip.add(new TextComponent(String.format(ModTooltips.WOOD_TIMED, "20", "10")));
+            }
+        }
+
+        tooltip.add(new TextComponent("Seconds Remaining: " + (maxTime - this.getDamage(stack))));
     }
 }

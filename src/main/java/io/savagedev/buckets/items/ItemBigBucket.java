@@ -29,6 +29,8 @@ import io.savagedev.buckets.items.base.BaseItemDamageableBucket;
 import io.savagedev.buckets.items.enums.DamageType;
 import io.savagedev.buckets.items.enums.ItemBigBucketItem;
 import io.savagedev.buckets.util.ModReference;
+import io.savagedev.buckets.util.ModTooltips;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -36,6 +38,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -68,10 +71,18 @@ public class ItemBigBucket extends BaseItemDamageableBucket implements IBucketIt
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        int maxUses = (this.getMaxDamage(stack) - this.getDamage(stack)) / 100;
+
+        if(Screen.hasShiftDown()) {
+            if(this.bucketItem.getFluidType() != Fluids.EMPTY) {
+                tooltip.add(new TextComponent(String.format(ModTooltips.DAMAGEABLE, maxUses)));
+            }
+        }
+
         if(stack.getMaxDamage() == 0) {
             tooltip.add(new TextComponent("Uses: 1"));
         } else {
-            tooltip.add(new TextComponent("Uses: " + (this.getMaxDamage(stack) - this.getDamage(stack)) / 100));
+            tooltip.add(new TextComponent("Uses: " + maxUses));
         }
     }
 }

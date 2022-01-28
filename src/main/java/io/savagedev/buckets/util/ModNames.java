@@ -55,5 +55,7 @@ public class ModNames
         public static final String INFERNAL_BUCKET_FULL = "infernal_bucket_full";
 
         public static final String SHIMMERING_BUCKET = "shimmering_bucket";
+
+        public static final String BLACK_HOLE_BUCKET = "black_hole_bucket";
     }
 }

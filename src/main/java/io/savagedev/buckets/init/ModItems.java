@@ -102,6 +102,8 @@ public class ModItems
 
     public static final RegistryObject<BaseItem> SHIMMERING_BUCKET = register(ModNames.Items.SHIMMERING_BUCKET, ItemShimmeringBucket::new);
 
+    public static final RegistryObject<BaseItem> BLACK_HOLE_BUCKET = register(ModNames.Items.BLACK_HOLE_BUCKET, ItemBlackHoleBucket::new);
+
     @SubscribeEvent
     public void onRegisterItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
